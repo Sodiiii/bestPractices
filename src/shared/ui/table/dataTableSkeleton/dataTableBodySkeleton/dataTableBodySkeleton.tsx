@@ -4,7 +4,7 @@ import { cn } from '@/shared/lib/classNames'
 
 import cls from './dataTableBodySkeleton.module.scss'
 
-type DataTableBodySkeletonProps = {
+interface DataTableBodySkeletonProps {
   columns: number
   rowCount?: number
 }

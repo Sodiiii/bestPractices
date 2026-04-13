@@ -1,4 +1,4 @@
-import type { Column } from '@tanstack/react-table'
+import type { Column, RowData } from '@tanstack/react-table'
 import type { InputProps, RangePickerProps, SelectProps } from '@tinkerbells/xenon-ui'
 
 import * as React from 'react'
@@ -14,13 +14,13 @@ import { DataTableFilter } from './dataTableFilter'
 import { DataTableSorting } from './dataTableSorting'
 import cls from './dataTableColumnHeader.module.scss'
 
-type DataTableColumnHeaderProps<TData> = {
+interface DataTableColumnHeaderProps<TData extends RowData> extends React.ComponentProps<'div'> {
   column: Column<TData>
   filter: DataTableFilterField
   filterProps?: RangePickerProps | InputProps | SelectProps
-} & React.ComponentProps<'div'>
+}
 
-export function DataTableColumnHeader<TData>({ column, filter, children, filterProps }: DataTableColumnHeaderProps<TData>) {
+export function DataTableColumnHeader<TData extends RowData>({ column, filter, children, filterProps }: DataTableColumnHeaderProps<TData>) {
   const [open, setOpen] = React.useState(false)
   const columnFilterValue = column.getFilterValue()
 
@@ -43,9 +43,9 @@ export function DataTableColumnHeader<TData>({ column, filter, children, filterP
         </DropdownTrigger>
       </div>
       <DropdownContent className={cls['dataTableColumnHeader--content']}>
-        <DataTableSorting column={column} />
+        <DataTableSorting<TData> column={column} />
         <DropdownDivider horizontalMargin={10} />
-        <DataTableFilter filter={filter} column={column} props={filterProps} />
+        <DataTableFilter<TData> filter={filter} column={column} props={filterProps} />
         <DropdownDivider horizontalMargin={10} />
         <DropdownItem
           className={cls.reset}

@@ -9,24 +9,29 @@ import { cn } from '@/shared/lib/classNames'
 import cls from './dataTableBody.module.scss'
 import { useDataTableContext } from '../dataTableContext'
 
-type DataTableBodyPropsVirtualized = {
+interface DataTableBodyPropsVirtualized {
   virtualized: true
   virtualizer: Virtualizer<HTMLDivElement, Element>
 }
 
-type DataTableBodyPropsNonVirtualized = {
+interface DataTableBodyPropsNonVirtualized {
   virtualized: false
 }
 
 type DataTableBodyProps = DataTableBodyPropsVirtualized | DataTableBodyPropsNonVirtualized
 
-type CellProps<TData extends RowData> = {
+interface CellProps<TData extends RowData> {
   cell: Cell<TData, unknown>
 }
 
 function DataTableCell<TData extends RowData>({
   cell,
 }: CellProps<TData>) {
+  const meta = cell.column.columnDef.meta as {
+    align?: 'left' | 'center' | 'right'
+    alignCell?: 'left' | 'center' | 'right'
+  } | undefined
+  const align = meta?.alignCell ?? meta?.align
   return (
     <TableCell
       key={cell.id}
@@ -34,6 +39,7 @@ function DataTableCell<TData extends RowData>({
         minWidth: cell.column.getSize(),
         width: cell.column.getSize() === 150 ? '100%' : cell.column.getSize(),
         maxWidth: '100%',
+        textAlign: align,
       }}
     >
       {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -41,7 +47,7 @@ function DataTableCell<TData extends RowData>({
   )
 }
 
-type RowProps<TData extends RowData> = {
+interface RowProps<TData extends RowData> {
   row: Row<TData>
   virtualRow: VirtualItem
   virtualizer: Virtualizer<HTMLDivElement, Element>
@@ -52,12 +58,18 @@ function DataTableRow<TData extends RowData>({
   virtualRow,
   virtualizer,
 }: RowProps<TData>) {
+  const { getRowProps } = useDataTableContext<TData>()
+  const rowProps = getRowProps?.(row)
+  const { style: rowStyle, ...restRowProps } = rowProps ?? {}
+
   return (
     <TableRow
       data-index={virtualRow.index}
       ref={node => virtualizer.measureElement(node)} // measure dynamic row height
       key={row.id}
+      {...restRowProps}
       style={{
+        ...rowStyle,
         display: 'flex',
         position: 'absolute',
         transform: `translateY(${virtualRow.start}px)`,
@@ -72,8 +84,11 @@ function DataTableRow<TData extends RowData>({
 function DataTableRowNonVirtualized<TData extends RowData>({
   row,
 }: { row: Row<TData> }) {
+  const { getRowProps } = useDataTableContext<TData>()
+  const rowProps = getRowProps?.(row)
+
   return (
-    <TableRow key={row.id}>
+    <TableRow key={row.id} {...rowProps}>
       {row.getVisibleCells().map(cell => <DataTableCell key={cell.id} cell={cell} />)}
     </TableRow>
   )

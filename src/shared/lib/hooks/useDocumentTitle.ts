@@ -2,13 +2,13 @@
 import { useEffect, useRef, useState } from 'react'
 
 /** The use document title options type */
-export type UseDocumentTitleOptions = {
+export interface UseDocumentTitleOptions {
   /** Restore the previous title on unmount */
   restoreOnUnmount?: boolean
 }
 
 /** The use document title return type */
-export type UseDocumentTitleReturn = {
+export interface UseDocumentTitleReturn {
   /** The current title */
   value: string
   /** Function to update the title */
@@ -45,6 +45,12 @@ export function useDocumentTitle(
       return
     set(value)
   }, [value])
+
+  useEffect(() => {
+    if (typeof initialValue !== 'string')
+      return
+    set(initialValue)
+  }, [initialValue])
 
   useEffect(() => {
     const observer = new MutationObserver(() => {

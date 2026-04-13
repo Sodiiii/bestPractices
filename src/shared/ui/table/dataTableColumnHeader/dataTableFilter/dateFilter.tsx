@@ -1,5 +1,5 @@
 import type { Dayjs } from 'dayjs'
-import type { Column } from '@tanstack/react-table'
+import type { Column, RowData } from '@tanstack/react-table'
 import type { RangePickerProps } from '@tinkerbells/xenon-ui'
 
 import { z } from 'zod'
@@ -10,11 +10,11 @@ import { DateFormat, dateFormatter } from '@/shared/lib/dateFormatter'
 
 const dateRangeSchema = z.array(z.string().min(2))
 
-export type DateFilterProps = {
-  column: Column<any>
-} & RangePickerProps
+export interface DateFilterProps<TData extends RowData = RowData> extends RangePickerProps {
+  column: Column<TData, unknown>
+}
 
-export function DateFilter({ column, ...rest }: DateFilterProps) {
+export function DateFilter<TData extends RowData = RowData>({ column, ...rest }: DateFilterProps<TData>) {
   const columnFilterValue = column.getFilterValue()
 
   const parseDefaultDates = (): [Dayjs, Dayjs] | undefined => {
@@ -60,7 +60,7 @@ export function DateFilter({ column, ...rest }: DateFilterProps) {
       defaultValue={parseDefaultDates()}
       value={parseDefaultDates()}
       // для предотвращения закрытия Popover по клику
-      getPopupContainer={(trigger: any) => trigger.parentNode}
+      getPopupContainer={(trigger: HTMLElement) => trigger.parentElement ?? trigger}
       {...rest}
     />
   )

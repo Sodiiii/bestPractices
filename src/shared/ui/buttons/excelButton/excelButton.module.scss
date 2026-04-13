@@ -1,0 +1,17 @@
+.excelButton {
+  flex-shrink: 0;
+  padding: 0 6px;
+  height: 24px;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.content {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}

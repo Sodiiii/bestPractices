@@ -9,13 +9,13 @@ import { DataTableBodySkeleton } from './dataTableBodySkeleton'
 import { DataTableHeaderSkeleton } from './dataTableHeaderSkeleton'
 import { DataTablePaginationSkeleton } from './dataTablePaginationSkeleton'
 
-type DataTableSkeletonProps = {
+interface DataTableSkeletonProps extends TableProps {
   columns: number
   rowCount?: number
   widths?: (string | number)[]
   pagination?: boolean
   wrapperClassName?: string
-} & TableProps
+}
 
 export function DataTableSkeleton({ columns, widths, rowCount, pagination, wrapperClassName, className, ...rest }: DataTableSkeletonProps) {
   return (

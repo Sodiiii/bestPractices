@@ -1,7 +1,7 @@
 .truncatedCell {
+  display: -webkit-box;
+  overflow: hidden;
   width: 200px;
   max-width: 250px;
-  overflow: hidden;
-  display: -webkit-box;
   -webkit-box-orient: vertical;
 }

@@ -29,7 +29,7 @@ type SuspensePropsWithFallback = SuspenseSharedProps & {
 
 type WithSuspenseProps = SuspensePropsWithComponent | SuspensePropsWithFallback
 
-export function withSuspense<T extends ComponentType<any>>(
+export function withSuspense<T extends ComponentType<object>>(
   WrappedComponent: T,
   suspenseProps: WithSuspenseProps,
 ): ForwardRefExoticComponent<

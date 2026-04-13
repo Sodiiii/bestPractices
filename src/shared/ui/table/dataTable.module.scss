@@ -1,17 +1,19 @@
 .dataTable {
-  height: 100%;
   width: 100%;
-
-  &--pagination {
-    height: calc(100% - 24px - var(--xenon-margin));
-  }
+  height: 100%;
 
   .scrollArea {
-    border-radius: var(--xenon-border-radius-lg);
+    position: relative;
     border: var(--xenon-line-width, 1px) solid
       var(--xenon-color-border-secondary, #f0f0f0);
+    border-radius: var(--xenon-border-radius-lg);
     height: 100%;
-    position: relative;
+  }
+
+  .scrollArea :global(.xenon-scroll-area__viewport) {
+    padding-bottom: 16px;
+    height: 100%;
+    box-sizing: border-box;
   }
 
   .container {
@@ -45,5 +47,9 @@
 
   .spinWrapper {
     height: 100%;
+  }
+
+  &--pagination {
+    height: calc(100% - 24px - var(--xenon-margin));
   }
 }

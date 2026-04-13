@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 
-export type UseModalResult = {
+export interface UseModalResult {
   isOpen: boolean
   open: () => void
   close: () => void

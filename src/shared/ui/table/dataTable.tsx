@@ -1,5 +1,5 @@
-import type { VirtualizerOptions } from '@tanstack/react-virtual'
-import type { RowData, Table as TanstackTable } from '@tanstack/react-table'
+import type { Virtualizer, VirtualizerOptions } from '@tanstack/react-virtual'
+import type { Row, RowData, Table as TanstackTable } from '@tanstack/react-table'
 
 import * as React from 'react'
 import { useVirtualizer } from '@tanstack/react-virtual'
@@ -44,21 +44,22 @@ const VIRTUALIZATION_CONFIG = {
   defaultOverscan: 5,
 } as const
 
-type DataTableBaseProps<TData extends RowData> = {
+interface DataTableBaseProps<TData extends RowData> extends React.ComponentProps<'div'> {
   table?: TanstackTable<TData>
   isLoading?: boolean
   skeleton?: React.ReactNode
   pagination?: boolean
   isFetching?: boolean
-} & React.ComponentProps<'div'>
+  getRowProps?: (row: Row<TData>) => React.HTMLAttributes<HTMLTableRowElement>
+}
 
-type Virtualization<TScrollElement extends Element, TItemElement extends Element> = {
+interface Virtualization<TScrollElement extends Element, TItemElement extends Element> extends Partial<VirtualizerOptions<TScrollElement, TItemElement>> {
   enabled: boolean
-} & Partial<VirtualizerOptions<TScrollElement, TItemElement>>
+}
 
 export type DataTableProps<TData extends RowData>
-  = | (DataTableBaseProps<TData> & { virtualization?: Virtualization<HTMLDivElement, HTMLDivElement> & { enabled: false } })
-    | (DataTableBaseProps<TData> & { virtualization: Virtualization<HTMLDivElement, HTMLDivElement> & { enabled: true } })
+  = | (DataTableBaseProps<TData> & { virtualization?: Virtualization<HTMLDivElement, Element> & { enabled: false } })
+    | (DataTableBaseProps<TData> & { virtualization: Virtualization<HTMLDivElement, Element> & { enabled: true } })
 
 function supportsAccurateMeasurement(): boolean {
   return typeof window !== 'undefined'
@@ -86,17 +87,18 @@ export function DataTable<TData extends RowData>(props: DataTableProps<TData>) {
   )
 }
 
-type DataTableViewProps<TData extends RowData> = {
+interface DataTableViewProps<TData extends RowData> extends React.ComponentProps<'div'> {
   table: TanstackTable<TData>
   isFetching?: boolean
   pagination?: boolean
-  virtualization?: Virtualization<HTMLDivElement, HTMLDivElement>
-} & React.ComponentProps<'div'>
+  virtualization?: Virtualization<HTMLDivElement, Element>
+  getRowProps?: (row: Row<TData>) => React.HTMLAttributes<HTMLTableRowElement>
+}
 
 function createVirtualizer(
   rows: unknown[],
   parentRef: React.RefObject<HTMLDivElement>,
-  virtualization: Virtualization<HTMLDivElement, HTMLDivElement>,
+  virtualization: Virtualization<HTMLDivElement, Element>,
 ) {
   const { enabled, ...virtualizerOptions } = virtualization
 
@@ -117,8 +119,9 @@ function createVirtualizer(
 function renderTableContent<TData extends RowData>(
   table: TanstackTable<TData>,
   virtualizationEnabled: boolean,
-  virtualizer?: any,
+  virtualizer?: Virtualizer<HTMLDivElement, Element>,
   isFetching?: boolean,
+  getRowProps?: (row: Row<TData>) => React.HTMLAttributes<HTMLTableRowElement>,
 ) {
   const { rows } = table.getRowModel()
 
@@ -127,6 +130,7 @@ function renderTableContent<TData extends RowData>(
       table={table}
       isFetching={isFetching}
       virtualized={virtualizationEnabled}
+      getRowProps={getRowProps}
     >
       <Table
         size="sm"
@@ -152,6 +156,7 @@ export function DataTableView<TData extends RowData>(props: DataTableViewProps<T
     className,
     pagination,
     virtualization,
+    getRowProps,
   } = props
 
   const parentRef = React.useRef<HTMLDivElement>(null)
@@ -172,6 +177,7 @@ export function DataTableView<TData extends RowData>(props: DataTableViewProps<T
               virtualizationEnabled,
               virtualizer,
               isFetching,
+              getRowProps,
             )}
             <ScrollBar orientation="horizontal" />
           </ScrollArea>

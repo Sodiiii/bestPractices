@@ -16,6 +16,11 @@ export function DataTableHeader<TData extends RowData>() {
       {table.getHeaderGroups().map(headerGroup => (
         <TableRow key={headerGroup.id} className={cn(cls.row)}>
           {headerGroup.headers.map((header) => {
+            const meta = header.column.columnDef.meta as {
+              align?: 'left' | 'center' | 'right'
+              alignHeader?: 'left' | 'center' | 'right'
+            } | undefined
+            const align = meta?.alignHeader ?? meta?.align
             return (
               <TableHead
                 className={cn(cls.head)}
@@ -23,6 +28,7 @@ export function DataTableHeader<TData extends RowData>() {
                   minWidth: header.getSize(),
                   width: header.getSize(),
                   maxWidth: '100%',
+                  textAlign: align,
                 }}
                 key={header.id}
               >

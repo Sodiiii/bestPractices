@@ -1,0 +1,11 @@
+.settingsButton {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

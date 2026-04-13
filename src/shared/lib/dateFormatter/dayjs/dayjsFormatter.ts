@@ -6,7 +6,7 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 
-import type { DateFormatter, DateFormatterFactory, DateFormatterOptions, DateInput } from '../dateFormatterTypes'
+import type { DateFormatter, DateFormatterFactory, DateFormatterOptions, DateFormatValue, DateInput } from '../dateFormatterTypes'
 
 import { DateFormat } from '../dateFormatterTypes'
 
@@ -53,7 +53,7 @@ export class DayjsFormatter implements DateFormatter {
    */
   format(
     date: DateInput,
-    format: DateFormat = DateFormat.MEDIUM,
+    format: DateFormatValue = DateFormat.MEDIUM,
     options?: DateFormatterOptions,
   ): string {
     const locale = options?.locale || this.defaultLocale

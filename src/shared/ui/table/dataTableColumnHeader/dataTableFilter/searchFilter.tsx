@@ -1,14 +1,14 @@
-import type { Column } from '@tanstack/react-table'
 import type { InputProps } from '@tinkerbells/xenon-ui'
+import type { Column, RowData } from '@tanstack/react-table'
 
 import { useEffect, useState } from 'react'
 import { Input } from '@tinkerbells/xenon-ui'
 
-export type SearchFilterProps = {
-  column: Column<any>
-} & InputProps
+export interface SearchFilterProps<TData extends RowData = RowData> extends InputProps {
+  column: Column<TData, unknown>
+}
 
-export function SearchFilter({ column, ...rest }: SearchFilterProps) {
+export function SearchFilter<TData extends RowData = RowData>({ column, ...rest }: SearchFilterProps<TData>) {
   const columnFilterValue = column.getFilterValue()
   const [value, setValue] = useState<string>((columnFilterValue ?? '') as string)
 

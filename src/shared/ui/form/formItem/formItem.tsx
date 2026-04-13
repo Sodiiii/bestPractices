@@ -5,13 +5,17 @@ import { Form as $Form } from '@tinkerbells/xenon-ui'
 import { Children, cloneElement, isValidElement, useEffect } from 'react'
 
 type $FormItemProps = React.ComponentProps<typeof $Form.Item>
+interface FormChildProps {
+  onChange?: (...values: unknown[]) => void
+  onBlur?: () => void
+}
 
 export type FormItemProps<TFieldValues extends FieldValues = FieldValues> = {
   children: React.ReactNode
   control: Control<TFieldValues>
   name: FieldPath<TFieldValues>
   disabled?: boolean
-  overrideFieldOnChange?: (...values: any[]) => void
+  overrideFieldOnChange?: (...values: unknown[]) => void
 } & Omit<$FormItemProps, 'name' | 'rules' | 'validateStatus'>
 
 export function FormItem<TFieldValues extends FieldValues = FieldValues>({
@@ -34,34 +38,37 @@ export function FormItem<TFieldValues extends FieldValues = FieldValues>({
   return (
     <$Form.Item
       {...props}
-      // eslint-disable-next-line ts/ban-ts-comment
-      // @ts-ignore
-      name={name}
+      name={name as string}
       initialValue={field.value}
       validateStatus={fieldState.invalid ? 'error' : undefined}
       help={fieldState.error?.message ?? help}
     >
       {Children.map(
         children,
-        child =>
-          isValidElement(child)
-          && cloneElement(child, {
+        (child) => {
+          if (!isValidElement<FormChildProps>(child))
+            return child
+
+          const childProps: Record<string, unknown> = {
             ...field,
-            // @ts-expect-error onChange type safe is not necessary here
-            onChange: (...params) => {
-              child.props.onChange && child.props.onChange(...params)
+            onChange: (...params: unknown[]) => {
+              child.props.onChange?.(...params)
               overrideFieldOnChange
                 ? overrideFieldOnChange(...params)
                 : field.onChange(...params)
             },
             onBlur: () => {
-              child.props.onBlur && child.props.onBlur()
+              child.props.onBlur?.()
               field.onBlur()
             },
-            ...(valuePropName && {
-              [valuePropName]: field.value,
-            }),
-          }),
+          }
+
+          if (valuePropName) {
+            childProps[valuePropName] = field.value
+          }
+
+          return cloneElement(child, childProps)
+        },
       )}
     </$Form.Item>
   )

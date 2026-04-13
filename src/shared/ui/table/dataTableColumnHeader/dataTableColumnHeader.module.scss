@@ -1,11 +1,11 @@
 .dataTableColumnHeader {
-  width: 100%;
-  height: 100%;
-  background: none;
-  border: none;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border: none;
+  width: 100%;
+  height: 100%;
+  background: none;
   gap: var(--xenon-margin-xxs);
 
   &--content {
@@ -20,10 +20,10 @@
     }
 
     :global(.xenon-radio-wrapper) {
-      width: 100%;
-      height: 100%;
       padding: var(--components-dropdown-component-paddingblock, 5px)
         var(--components-dropdown-global-controlpaddinghorizontal, 12px);
+      width: 100%;
+      height: 100%;
     }
 
     :global(.xenon-dropdown__item) {
@@ -32,25 +32,17 @@
   }
 
   &--trigger {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    max-width: 240px;
-    min-height: 24px;
-    background: transparent;
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     border: none;
-    font-weight: bold;
     padding: 2px 15px !important;
-
-    &:hover {
-      background-color: var(--xenon-color-fill-content);
-    }
-
-    &[data-status="open"] {
-      background-color: var(--xenon-color-fill-content);
-    }
+    width: 100%;
+    min-height: 24px;
+    max-width: 240px;
+    font-weight: bold;
+    background: transparent;
 
     &-icon {
       color: var(--xenon-color-text-disabled);
@@ -63,6 +55,14 @@
         width: 12px;
         height: 12px;
       }
+    }
+
+    &:hover {
+      background-color: var(--xenon-color-fill-content);
+    }
+
+    &[data-status="open"] {
+      background-color: var(--xenon-color-fill-content);
     }
   }
 }

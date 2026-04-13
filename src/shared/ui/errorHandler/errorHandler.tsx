@@ -5,17 +5,31 @@ import { env } from '@/shared/lib/env'
 
 import cls from './errorHandler.module.scss'
 
-type ErrorHandlerProps = {
+interface ErrorHandlerProps {
   error: Error
-  resetErrorBoundary?: (...args: any[]) => void
+  resetErrorBoundary?: (...args: unknown[]) => void
 }
 
 const isDevelopment = env.NODE_ENV === 'development'
 
+interface ErrorWithResponseStatus {
+  response?: {
+    status?: number
+  }
+}
+
+function hasErrorStatus(error: unknown, status: number): boolean {
+  if (!error || typeof error !== 'object')
+    return false
+
+  const typedError = error as ErrorWithResponseStatus
+  return typedError.response?.status === status
+}
+
 export function ErrorHandler(props: ErrorHandlerProps) {
   const { error, resetErrorBoundary } = props
 
-  if ((error as any)?.response?.status === 404) {
+  if (hasErrorStatus(error, 404)) {
     return <Navigate to="/404" replace />
   }
   const errorMessage = isDevelopment

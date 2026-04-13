@@ -7,14 +7,14 @@
 
 .toolbar {
   display: flex;
-  align-items: center;
   flex-wrap: wrap;
-  gap: 8px;
-  padding: 8px 12px;
-  background-color: var(--xenon-color-bg-container);
+  align-items: center;
   border-bottom: 1px solid var(--xenon-color-border);
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
+  padding: 8px 12px;
+  background-color: var(--xenon-color-bg-container);
+  gap: 8px;
 }
 
 .controlsGroup {
@@ -23,49 +23,49 @@
 
 .control {
   display: flex;
-  justify-content: center;
   align-items: center;
-  border-radius: var(--xenon-border-radius-sm);
-  cursor: pointer;
-  min-width: 26px;
-  height: 26px;
+  justify-content: center;
   border: 1px solid var(--xenon-color-border);
-  background-color: var(--xenon-color-bg-container);
+  border-radius: var(--xenon-border-radius-sm);
+  height: 26px;
+  min-width: 26px;
   color: var(--xenon-color-text-secondary);
+  background-color: var(--xenon-color-bg-container);
   transition: all 0.2s ease;
+  cursor: pointer;
 
   &:hover {
-    background-color: var(--xenon-control-item-bg-hover);
     color: var(--xenon-color-text);
+    background-color: var(--xenon-control-item-bg-hover);
+  }
+
+  &:disabled {
+    border-color: var(--xenon-color-border-secondary);
+    color: var(--xenon-color-text-disabled);
+    background-color: var(--xenon-color-bg-container-disabled);
+    cursor: not-allowed;
+
+    &:hover {
+      color: var(--xenon-color-text-disabled);
+      background-color: var(--xenon-color-bg-container-disabled);
+    }
   }
 
   &.active {
-    background-color: var(--xenon-color-primary);
-    color: var(--xenon-color-text-light-solid);
     border-color: var(--xenon-color-primary);
+    color: var(--xenon-color-text-light-solid);
+    background-color: var(--xenon-color-primary);
 
     &:hover {
       background-color: var(--xenon-color-primary-hover);
     }
   }
-
-  &:disabled {
-    cursor: not-allowed;
-    color: var(--xenon-color-text-disabled);
-    background-color: var(--xenon-color-bg-container-disabled);
-    border-color: var(--xenon-color-border-secondary);
-
-    &:hover {
-      background-color: var(--xenon-color-bg-container-disabled);
-      color: var(--xenon-color-text-disabled);
-    }
-  }
 }
 
 .content {
-  background-color: var(--xenon-color-bg-container);
-  border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px;
+  border-bottom-left-radius: 6px;
+  background-color: var(--xenon-color-bg-container);
 
   :global(.ProseMirror) {
     outline: none;
@@ -82,11 +82,11 @@
 
       &.is-editor-empty:first-of-type::before {
         content: attr(data-placeholder);
-        pointer-events: none;
-        user-select: none;
         float: left;
         height: 0;
         color: var(--xenon-color-text-placeholder);
+        pointer-events: none;
+        user-select: none;
       }
     }
 
@@ -106,10 +106,6 @@
       margin: 0 0 7px;
       padding-left: 20px;
 
-      &:last-child {
-        margin-bottom: 0;
-      }
-
       li {
         margin: 2px 0;
 
@@ -118,12 +114,16 @@
           margin: 0;
         }
       }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
     }
 
     mark {
-      background-color: var(--xenon-gold-3);
       border-radius: var(--xenon-border-radius-sm);
       padding: 0 2px;
+      background-color: var(--xenon-gold-3);
     }
 
     strong {
@@ -135,37 +135,37 @@
     }
 
     code {
-      background-color: var(--xenon-color-fill-alter-solid);
       border-radius: var(--xenon-border-radius-sm);
       padding: 2px 4px;
       font-family: Monaco, Menlo, "Ubuntu Mono", monospace;
       font-size: 0.9em;
       color: var(--xenon-color-text);
+      background-color: var(--xenon-color-fill-alter-solid);
     }
 
     pre {
-      background-color: var(--xenon-color-fill-alter-solid);
+      overflow-x: auto;
+      margin: 0 0 7px;
       border-radius: 6px;
       padding: 12px;
       font-family: Monaco, Menlo, "Ubuntu Mono", monospace;
-      overflow-x: auto;
-      margin: 0 0 7px;
+      background-color: var(--xenon-color-fill-alter-solid);
+
+      code {
+        padding: 0;
+        font-size: inherit;
+        background: none;
+      }
 
       &:last-child {
         margin-bottom: 0;
       }
-
-      code {
-        background: none;
-        padding: 0;
-        font-size: inherit;
-      }
     }
 
     blockquote {
+      margin: 0 0 7px;
       border-left: 4px solid var(--xenon-color-border);
       padding-left: 12px;
-      margin: 0 0 7px;
       color: var(--xenon-color-text-secondary);
 
       &:last-child {
@@ -174,26 +174,9 @@
     }
 
     hr {
+      margin: 12px 0;
       border: none;
       border-top: 1px solid var(--xenon-color-border);
-      margin: 12px 0;
-    }
-
-    // Text alignment
-    &[style*="text-align: left"] {
-      text-align: left;
-    }
-
-    &[style*="text-align: center"] {
-      text-align: center;
-    }
-
-    &[style*="text-align: right"] {
-      text-align: right;
-    }
-
-    &[style*="text-align: justify"] {
-      text-align: justify;
     }
 
     *[style*="text-align: left"] {
@@ -215,11 +198,33 @@
     &:focus {
       outline: none;
     }
+
+    // Text alignment
+    &[style*="text-align: left"] {
+      text-align: left;
+    }
+
+    &[style*="text-align: center"] {
+      text-align: center;
+    }
+
+    &[style*="text-align: right"] {
+      text-align: right;
+    }
+
+    &[style*="text-align: justify"] {
+      text-align: justify;
+    }
   }
 }
 
 .headingSelect {
   min-width: 150px;
+  min-height: 26px;
+}
+
+.metricSelect {
+  min-width: 92px;
   min-height: 26px;
 }
 
@@ -247,6 +252,9 @@
 }
 
 .colorPicker {
+  display: inline-flex;
+  align-items: center;
+
   :global(.xenon-color-picker-trigger) {
     border: 1px solid var(--xenon-color-border);
     border-radius: var(--xenon-border-radius-sm);

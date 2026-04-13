@@ -15,7 +15,7 @@ import {
 
 import { useDocumentTitle } from '@/shared/lib/hooks/useDocumentTitle'
 
-export function withDocumentTitle<T extends ComponentType<any>>(
+export function withDocumentTitle<T extends ComponentType<object>>(
   WrappedComponent: T,
   options: { title: string },
 ): ForwardRefExoticComponent<

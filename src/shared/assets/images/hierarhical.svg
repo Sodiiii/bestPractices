@@ -1,0 +1,11 @@
+<svg
+    viewBox="0 0 18 18"
+    xmlns="http://www.w3.org/2000/svg"
+    style="transform: scale(0.8); transform-origin: 0 0;"
+>
+    <path
+    d="m15 10v-4h-4v1.5h-2.5v-4c0-.3-.1-.5-.3-.7s-.4-.3-.7-.3h-2.5v-1.5h-4v4h4v-1.5h2.5v9c0 .3.1.5.3.7s.4.3.7.3h2.5v1.5h4v-4h-4v1.5h-2.5v-4h2.5v1.5zm-11-6h-2v-2h2zm8 8h2v2h-2zm0-5h2v2h-2z"
+    fill="currentColor"
+    transform="translate(2.2, 1.5) scale(1.0)"
+    />
+</svg>

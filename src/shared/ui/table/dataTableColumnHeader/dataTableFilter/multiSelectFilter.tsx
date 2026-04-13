@@ -1,14 +1,14 @@
-import type { Column } from '@tanstack/react-table'
 import type { SelectProps } from '@tinkerbells/xenon-ui'
+import type { Column, RowData } from '@tanstack/react-table'
 
 import * as React from 'react'
 import { Select } from '@tinkerbells/xenon-ui'
 
-export type MultiSelectFilterProps = {
-  column: Column<any>
-} & SelectProps
+export interface MultiSelectFilterProps<TData extends RowData = RowData> extends SelectProps {
+  column: Column<TData, unknown>
+}
 
-export function MultiSelectFilter({ column, value, options, ...rest }: MultiSelectFilterProps) {
+export function MultiSelectFilter<TData extends RowData = RowData>({ column, value, options, ...rest }: MultiSelectFilterProps<TData>) {
   const columnFilterValue = column.getFilterValue()
 
   const selectedValues = Array.isArray(columnFilterValue) ? columnFilterValue : []

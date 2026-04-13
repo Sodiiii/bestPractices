@@ -6,8 +6,8 @@ import { cn } from '@/shared/lib/classNames'
 
 import cls from './dataTableTruncatedCell.module.scss'
 
-type DataTableTruncatedCellProps = {
-  cell: Cell<any, string | undefined>
+interface DataTableTruncatedCellProps {
+  cell: Cell<unknown, string | undefined>
   width?: string | number
   maxWidth?: string | number
   height?: string | number

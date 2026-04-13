@@ -1,0 +1,16 @@
+.debouncedSlider {
+  display: flex;
+  gap: 8px;
+
+  .slider {
+    flex-grow: 1;
+    flex-shrink: 0;
+  }
+
+  .btn {
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+}

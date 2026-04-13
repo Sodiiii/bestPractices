@@ -5,20 +5,33 @@ import { env } from '@/shared/lib/env'
 
 import { App } from './app'
 
-async function enableMocking() {
-  if (!env.APP_OFFLINE) {
+function ensureHashRouting() {
+  // Приложение использует `createHashRouter`, но пользователи могут открыть ссылку без `#`
+  // Исправляем URL один раз на старте, перенося путь в hash.
+  const baseUrl = env.BASE_URL.endsWith('/') ? env.BASE_URL : `${env.BASE_URL}/`
+
+  const { pathname, search, hash } = window.location
+  if (hash && hash.startsWith('#/'))
     return
-  }
 
-  const { worker } = await import('./mocks/browser')
+  if (pathname === baseUrl.slice(0, -1))
+    return
 
-  return worker.start()
+  if (!pathname.startsWith(baseUrl))
+    return
+
+  const rest = pathname.slice(baseUrl.length)
+  if (!rest)
+    return
+
+  const normalized = rest.startsWith('/') ? rest : `/${rest}`
+  window.history.replaceState(null, '', `${baseUrl}#${normalized}${search}`)
 }
 
-enableMocking().then(() => {
-  createRoot(document.getElementById('root')!).render(
-    <StrictMode>
-      <App />
-    </StrictMode>,
-  )
-})
+ensureHashRouting()
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+)

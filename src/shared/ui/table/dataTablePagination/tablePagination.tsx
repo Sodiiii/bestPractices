@@ -1,15 +1,15 @@
-import type { Table } from '@tanstack/react-table'
+import type { RowData, Table } from '@tanstack/react-table'
 import type { PaginationProps } from '@tinkerbells/xenon-ui'
 
 import { Pagination } from '@tinkerbells/xenon-ui'
 
 import cls from './tablePagination.module.scss'
 
-type TablePaginationProps = {
-  table: Table<any>
-} & PaginationProps
+interface TablePaginationProps<TData extends RowData> extends PaginationProps {
+  table: Table<TData>
+}
 
-export function TablePagination({ table, ...rest }: TablePaginationProps) {
+export function TablePagination<TData extends RowData>({ table, ...rest }: TablePaginationProps<TData>) {
   return (
     <Pagination
       showSizeChanger

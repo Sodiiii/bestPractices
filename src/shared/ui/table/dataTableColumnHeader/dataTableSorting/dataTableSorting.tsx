@@ -1,13 +1,13 @@
-import type { Column } from '@tanstack/react-table'
+import type { Column, RowData } from '@tanstack/react-table'
 
 import * as React from 'react'
 import { DropdownItem, Flex, Radio } from '@tinkerbells/xenon-ui'
 
-type SortingProps = {
-  column: Column<any>
+interface SortingProps<TData extends RowData = RowData> {
+  column: Column<TData, unknown>
 }
 
-export function DataTableSorting({ column }: SortingProps) {
+export function DataTableSorting<TData extends RowData = RowData>({ column }: SortingProps<TData>) {
   const handleSortingChange = React.useCallback((value: 'asc' | 'desc' | 'default') => {
     if (value === 'default') {
       column.clearSorting()

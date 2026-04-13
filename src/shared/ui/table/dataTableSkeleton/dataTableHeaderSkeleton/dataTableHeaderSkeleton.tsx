@@ -4,7 +4,7 @@ import { cn } from '@/shared/lib/classNames'
 
 import cls from './dataTableHeaderSkeleton.module.scss'
 
-type DataTableHeaderSkeletonProps = {
+interface DataTableHeaderSkeletonProps {
   columns: number
   widths?: (string | number)[]
 }

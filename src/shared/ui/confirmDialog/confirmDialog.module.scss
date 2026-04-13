@@ -1,0 +1,25 @@
+.confirmDialog {
+  [class*="xenon-modal-header"] {
+    & > div {
+      font-family: Roboto, sans-serif;
+      font-size: 20px;
+      color: var(--xenon-color-text);
+    }
+  }
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.description {
+  color: var(--xenon-color-text);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}

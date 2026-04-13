@@ -9,10 +9,10 @@ import { cn } from '@/shared/lib/classNames'
 import cls from '../richTextEditor.module.scss'
 import { useRichTextEditorContext } from '../richTextEditor'
 
-type RichTextEditorControlProps = {
+interface RichTextEditorControlProps extends IconButtonProps {
   active?: boolean
   title?: string
-} & IconButtonProps
+}
 
 export const RichTextEditorControl = React.forwardRef<HTMLButtonElement, RichTextEditorControlProps>(({
   children,
@@ -39,12 +39,35 @@ export const RichTextEditorControl = React.forwardRef<HTMLButtonElement, RichTex
 
 RichTextEditorControl.displayName = 'RichTextEditorControl'
 
-type CreateControlConfig = {
+interface CreateControlConfig {
   label: string
   icon: React.ReactNode
-  isActive?: { name: string, attributes?: Record<string, any> | string }
+  isActive?: { name: string, attributes?: Record<string, unknown> | string }
   isDisabled?: (editor: TiptapEditor | null) => boolean
-  operation: { name: string, attributes?: Record<string, any> | string }
+  operation: { name: string, attributes?: Record<string, unknown> | string }
+}
+
+function runEditorOperation(
+  editor: TiptapEditor | null,
+  operation: CreateControlConfig['operation'],
+) {
+  const chain = editor?.chain().focus()
+  if (!chain)
+    return
+
+  const operationRecord = chain as unknown as Record<string, unknown>
+  const command = operationRecord[operation.name]
+
+  if (typeof command !== 'function')
+    return
+
+  const next = operation.attributes === undefined
+    ? command.call(chain)
+    : command.call(chain, operation.attributes)
+
+  if (next && typeof next === 'object' && 'run' in next && typeof next.run === 'function') {
+    next.run()
+  }
 }
 
 export function createControl({
@@ -62,7 +85,7 @@ export function createControl({
         <TooltipTrigger asChild>
           <RichTextEditorControl
             ref={ref}
-            onClick={() => (editor as any)?.chain().focus()[operation.name](operation.attributes).run()}
+            onClick={() => runEditorOperation(editor, operation)}
             active={isActive?.name ? editor.isActive(isActive.name, isActive.attributes) : false}
             disabled={isDisabled?.(editor) || false}
             title={_label}

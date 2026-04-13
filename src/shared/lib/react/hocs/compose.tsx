@@ -14,10 +14,10 @@ export function compose<Props extends object>(
   ...hocs: Array<(component: ComponentType<Props>) => ComponentType<Props>>
 ): (
   component: ComponentType<Props>,
-) => ForwardRefExoticComponent<PropsWithoutRef<Props> & RefAttributes<any>> {
+) => ForwardRefExoticComponent<PropsWithoutRef<Props> & RefAttributes<unknown>> {
   return (component: ComponentType<Props>) => {
-    const WrappedComponent = forwardRef<Props, Props>(
-      (props, ref: ForwardedRef<Props>) => {
+    const WrappedComponent = forwardRef<unknown, Props>(
+      (props, ref: ForwardedRef<unknown>) => {
         const ComposedComponent = hocs.reduceRight(
           (wrapped, hoc) => hoc(wrapped),
           component,

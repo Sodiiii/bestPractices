@@ -1,0 +1,160 @@
+.controlItem {
+  min-width: 0;
+}
+
+.inputLabel, .selectNumberLabel, .selectTextLabel {
+  display: flex;
+  align-items: center;
+  font-size: var(--xenon-font-size);
+  gap: 10px;
+}
+
+.labelAboveLayout {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.inputLabel {
+  width: 100%;
+
+  [class*="xenon-input"] {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+}
+
+.sliderLabel {
+  display: flex;
+  flex-direction: column;
+  font-size: var(--xenon-font-size);
+
+  [class*="xenon-slider"] {
+    margin-right: 0;
+    margin-left: 0;
+  }
+}
+
+.colorLabel {
+  display: flex;
+  font-size: var(--xenon-font-size);
+  gap: 8px
+}
+
+
+
+.selectLabel {
+  display: flex;
+  flex-direction: column;
+  font-size: var(--xenon-font-size);
+  gap: 10px;
+  
+}
+
+.multiSelectLabel {
+  display: flex;
+  flex-direction: column;
+  font-size: var(--xenon-font-size);
+  gap: 10px;
+  
+}
+
+.switchLabel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--xenon-font-size);
+  gap: 10px;
+}
+
+.radioGroupLabel {
+  display: flex;
+  flex-direction: column;
+  font-size: var(--xenon-font-size);
+  gap: 10px;
+}
+
+.radioGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+
+  :global(.xenon-radio-wrapper) {
+    margin-inline-start: 0;
+  }
+
+  :global(.xenon-radio-wrapper + .xenon-radio-wrapper) {
+    margin-inline-start: 0;
+  }
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  
+}
+
+.tableBlock {
+  overflow-x: auto;
+}
+
+.settingsTable {
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+}
+
+.settingsTableCorner {
+  border: 1px solid var(--xenon-color-border-secondary);
+  border-right: none;
+  border-bottom: none;
+  width: 120px;
+  min-width: 120px;
+  background: var(--xenon-color-bg-container, #f7f8fa);
+}
+
+.settingsTableColumnHeader {
+  border: 1px solid var(--xenon-color-border-secondary);
+  border-right: none;
+  border-bottom: none;
+  padding: 8px;
+  font-weight: 500;
+  text-align: left;
+  background: var(--xenon-color-bg-container, #f7f8fa);
+
+  &:last-child {
+    border-right: 1px solid var(--xenon-color-border-secondary);
+  }
+}
+
+.settingsTableRowHeader {
+  vertical-align: top;
+  border: 1px solid var(--xenon-color-border-secondary);
+  border-right: none;
+  padding: 8px;
+  font-weight: 500;
+  text-align: left;
+  background: var(--xenon-color-bg-container, #f7f8fa);
+}
+
+.settingsTableCell {
+  vertical-align: top;
+  border: 1px solid var(--xenon-color-border-secondary);
+  border-right: none;
+  padding: 8px;
+
+  &:last-child {
+    border-right: 1px solid var(--xenon-color-border-secondary);
+  }
+}
+
+.labelAbove {
+  margin-top: 10px;
+  margin-bottom: 12px;
+  font-weight: 500;
+  color: var(--xenon-color-text);
+
+  &:first-child{
+    margin-top: 0;
+  }
+}

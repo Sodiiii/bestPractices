@@ -1,0 +1,11 @@
+.debouncedTextarea {
+  outline: none;
+  border: none;
+  width: 100%;
+  font-weight: 800;
+  font-size: inherit;
+  text-align: center;
+  color: var(--color-text);
+  background: var(--xenon-color-bg-container);
+  resize: none;
+}

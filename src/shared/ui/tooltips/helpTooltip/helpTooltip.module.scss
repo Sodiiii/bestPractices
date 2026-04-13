@@ -1,0 +1,11 @@
+.helpTooltip {
+  margin-bottom: -2px;
+  margin-left: 5px;
+  cursor: pointer;
+
+  path, circle {
+    fill: var(--xenon-color-text-tertiary);
+
+  }
+  
+}

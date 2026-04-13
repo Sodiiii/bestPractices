@@ -1,4 +1,4 @@
-import type { Column } from '@tanstack/react-table'
+import type { Column, RowData } from '@tanstack/react-table'
 import type { InputProps, RangePickerProps, SelectProps } from '@tinkerbells/xenon-ui'
 
 import type { DataTableFilterField } from '../../dataTableTypes'
@@ -8,13 +8,13 @@ import { SearchFilter } from './searchFilter'
 import { SelectFilter } from './selectFilter'
 import { MultiSelectFilter } from './multiSelectFilter'
 
-export type FilterProps = {
+export interface FilterProps<TData extends RowData = RowData> {
   filter: DataTableFilterField
-  column: Column<any>
+  column: Column<TData, unknown>
   props?: RangePickerProps | InputProps | SelectProps
 }
 
-export function DataTableFilter({ filter, column, props }: FilterProps) {
+export function DataTableFilter<TData extends RowData = RowData>({ filter, column, props }: FilterProps<TData>) {
   switch (filter.type) {
     case 'number':
     case 'text':

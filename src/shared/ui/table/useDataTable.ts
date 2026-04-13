@@ -36,7 +36,17 @@ const SORT_KEY = 'sort'
 const FILTERS_KEY = 'filters'
 const THROTTLE_MS = 50
 
-type UseDataTableProps<TData> = {
+interface UseDataTableProps<TData>
+  extends Omit<
+    TableOptions<TData>,
+    | 'state'
+    | 'pageCount'
+    | 'getCoreRowModel'
+    | 'manualFiltering'
+    | 'manualPagination'
+    | 'manualSorting'
+  >,
+  Required<Pick<TableOptions<TData>, 'pageCount'>> {
   initialState?: Omit<Partial<TableState>, 'sorting'> & {
     sorting?: ExtendedColumnSort<TData>[]
   }
@@ -47,15 +57,7 @@ type UseDataTableProps<TData> = {
   scroll?: boolean
   shallow?: boolean
   startTransition?: React.TransitionStartFunction
-} & Omit<
-  TableOptions<TData>,
-  | 'state'
-  | 'pageCount'
-  | 'getCoreRowModel'
-  | 'manualFiltering'
-  | 'manualPagination'
-  | 'manualSorting'
-> & Required<Pick<TableOptions<TData>, 'pageCount'>>
+}
 
 export function useDataTable<TData>(props: UseDataTableProps<TData>) {
   const {

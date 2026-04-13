@@ -11,7 +11,7 @@ import cls from './richTextEditor.module.scss'
 import * as controls from './richTextEditorControl'
 import { DEFAULT_LABELS } from './richTextEditorConfig'
 
-type RichTextEditorContextProps = {
+interface RichTextEditorContextProps {
   editor: TiptapEditor | null
   labels: Record<string, string>
 }
@@ -26,7 +26,7 @@ export function useRichTextEditorContext() {
   return context
 }
 
-type RichTextEditorControlsGroupProps = {
+interface RichTextEditorControlsGroupProps {
   children: React.ReactNode
 }
 
@@ -49,7 +49,7 @@ function RichTextEditorControlsGroup({ children }: RichTextEditorControlsGroupPr
   )
 }
 
-type RichTextEditorToolbarProps = {
+interface RichTextEditorToolbarProps {
   children: React.ReactNode
 }
 
@@ -61,7 +61,7 @@ function RichTextEditorToolbar({ children }: RichTextEditorToolbarProps) {
   )
 }
 
-type RichTextEditorContentProps = {
+interface RichTextEditorContentProps {
   className?: string
 }
 
@@ -75,7 +75,7 @@ function RichTextEditorContent({ className }: RichTextEditorContentProps) {
   )
 }
 
-type RichTextEditorProps = {
+interface RichTextEditorProps {
   editor: TiptapEditor | null
   children: React.ReactNode
   labels?: Partial<typeof DEFAULT_LABELS>
@@ -167,3 +167,5 @@ RichTextEditor.Undo = controls.UndoControl
 RichTextEditor.Redo = controls.RedoControl
 RichTextEditor.Heading = controls.HeadingControl
 RichTextEditor.Color = controls.ColorControl
+RichTextEditor.FontSize = controls.FontSizeControl
+RichTextEditor.LineHeight = controls.LineHeightControl

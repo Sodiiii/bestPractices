@@ -1,0 +1,80 @@
+$header-height: var(--chart-card-head-height, 56px);
+
+.ChartCard {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: var(--xenon-line-width) var(--xenon-line-type) var(--xenon-color-border-secondary);
+  border-radius: 4px;
+  height: 100%;
+  box-sizing: border-box;
+  background: var(--xenon-color-bg-container);
+
+  .header {
+    display: flex;
+    flex: 0 0 $header-height;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--color-split);
+    padding: 0 var(--xenon-padding-sm);
+    height: $header-height;
+
+    &Date {
+      margin-right: auto;
+      margin-left: 0.5rem;
+      font-weight: 500;
+      font-size: var(--fz)
+    }
+
+    &Subtitle {
+      margin-right: auto;
+      margin-left: 0.5rem;
+      font-weight: 400;
+      font-size: var(--fz)
+    }
+
+    &LeftControls {
+      margin-right: auto;
+      margin-left: 0.5rem;
+    }
+
+    &Title {
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+      font-size: var(--fz-sm);
+      color: var(--xenon-color-text);
+      gap: 0;
+    }
+
+    .leftEdgeControls {
+      margin-left: calc(-1 * var(--xenon-padding-sm) + 2px);
+    }
+
+    &.borderless {
+      border-bottom-color: transparent;
+    }
+  }
+
+  .content {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    overflow: hidden;
+    padding: var(--xenon-padding-sm);
+    height: calc(100% - $header-height);
+    min-height: 0;
+
+    &.empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  &.withoutHeader {
+    .content {
+      height: 100%;
+    }
+  }
+}

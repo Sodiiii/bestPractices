@@ -4,25 +4,24 @@ import type { FieldValues, UseFormProps, UseFormReturn } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
-type UseZoodHookForm<
+interface UseZodHookFormOptions<
   TFieldValues extends FieldValues = FieldValues,
-  TContext = any,
-  TTransformedValues = TFieldValues,
-> = {
-  schema?: z.ZodType<TTransformedValues>
-} & Omit<UseFormProps<TFieldValues, TContext, TTransformedValues>, 'resolver'>
+  TContext = unknown,
+> extends Omit<UseFormProps<TFieldValues, TContext>, 'resolver'> {
+  schema?: z.ZodType<TFieldValues, TFieldValues>
+}
 
 export function useZodHookForm<
   TFieldValues extends FieldValues = FieldValues,
-  TContext = any,
-  TTransformedValues = TFieldValues,
+  TContext = unknown,
 >({
   schema,
   ...rest
-}: UseZoodHookForm<TFieldValues, TContext, TTransformedValues>): UseFormReturn<TFieldValues, TContext, TTransformedValues> {
-  return useForm<TFieldValues, TContext, TTransformedValues>({
-    // TODO: поправить as any
-    resolver: schema ? zodResolver(schema as any) : undefined,
+}: UseZodHookFormOptions<TFieldValues, TContext>): UseFormReturn<TFieldValues, TContext> {
+  const resolver = schema ? zodResolver(schema) : undefined
+
+  return useForm<TFieldValues, TContext>({
     ...rest,
+    resolver: resolver as UseFormProps<TFieldValues, TContext>['resolver'],
   })
 }

@@ -1,4 +1,4 @@
-type ClassNamesDictionary = {
+interface ClassNamesDictionary {
   [index: string]: boolean | undefined | null
 }
 

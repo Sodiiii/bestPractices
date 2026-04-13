@@ -8,10 +8,14 @@ import TextStyle from '@tiptap/extension-text-style'
 import { useDebouncedCallback } from '@/shared/lib/hooks/useDebouncedCallback.'
 
 import { RichTextEditor } from '../richTextEditor'
+import { FontSizeExtension, LineHeightExtension } from './extensions'
 
-export type EditorProps = {
+export interface EditorProps {
+  /** Начальный HTML-контент редактора. */
   content: string
+  /** Колбэк изменения HTML-контента. */
   onUpdate: (value: string) => void
+  /** Задержка перед публикацией изменений наружу. */
   debounceMs?: number
 }
 
@@ -24,6 +28,8 @@ export function Editor({ content, onUpdate, debounceMs = 250 }: EditorProps) {
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
       Color,
       TextStyle,
+      FontSizeExtension,
+      LineHeightExtension,
     ],
     content,
     onUpdate: ({ editor }) => {
@@ -42,6 +48,8 @@ export function Editor({ content, onUpdate, debounceMs = 250 }: EditorProps) {
         <RichTextEditor.Italic />
         <RichTextEditor.Highlight />
         <RichTextEditor.Color />
+        <RichTextEditor.FontSize />
+        <RichTextEditor.LineHeight />
         <RichTextEditor.Heading />
       </RichTextEditor.Toolbar>
       <RichTextEditor.Content />

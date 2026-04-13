@@ -9,17 +9,17 @@
 }
 
 .navbar {
+  margin-right: auto;
+  width: 50%;
+
   li:nth-child(1) {
-    pointer-events: none;
-    color: var(--xenon-color-primary) !important;
     display: flex;
     align-items: end;
+    color: var(--xenon-color-primary) !important;
+    pointer-events: none;
 
     svg {
       margin-bottom: 1rem;
     }
   }
-
-  width: 50%;
-  margin-right: auto;
 }

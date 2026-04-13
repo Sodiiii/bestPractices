@@ -1,24 +1,16 @@
-import '@tanstack/react-table'
 import type { SelectProps } from '@tinkerbells/xenon-ui'
 import type { ColumnFilter, ColumnSort } from '@tanstack/react-table'
 
 import { z } from 'zod'
 import { createParser } from 'nuqs'
 
-declare module '@tanstack/react-table' {
-  // eslint-disable-next-line unused-imports/no-unused-vars
-  type ColumnMeta<TData = unknown, TValue = unknown> = {
-    align?: 'center' | 'left' | 'right'
-  }
+export interface ExtendedColumnSort<TData> extends Omit<ColumnSort, 'id'> {
+  id: Extract<keyof TData, string>
 }
 
-export type ExtendedColumnSort<TData> = {
+export interface ExtendedColumnFilter<TData> extends Omit<ColumnFilter, 'id'> {
   id: Extract<keyof TData, string>
-} & Omit<ColumnSort, 'id'>
-
-export type ExtendedColumnFilter<TData> = {
-  id: Extract<keyof TData, string>
-} & Omit<ColumnFilter, 'id'>
+}
 
 export const filterTypes = [
   'text',
@@ -31,21 +23,21 @@ export const filterTypes = [
 
 export type ColumnType = typeof filterTypes[number]
 
-type BaseDataTableFilterField = {
+interface BaseDataTableFilterField {
   type: ColumnType
 }
 
-type SelectDataTableFilterField = {
+interface SelectDataTableFilterField extends BaseDataTableFilterField {
   type: 'select' | 'multi-select'
   options: SelectProps['options']
   value?: SelectProps['value']
-} & BaseDataTableFilterField
+}
 
-type OtherDataTableFilterField = {
+interface OtherDataTableFilterField extends BaseDataTableFilterField {
   type: Exclude<ColumnType, 'select' | 'multi-select'>
   options?: never
-  value?: any
-} & BaseDataTableFilterField
+  value?: unknown
+}
 
 export type DataTableFilterField = SelectDataTableFilterField | OtherDataTableFilterField
 
@@ -140,7 +132,7 @@ export function getSortingStateParser<TData>(columnIds?: string[] | Set<string>)
   })
 }
 
-export type DataTableQueryParams = {
+export interface DataTableQueryParams {
   page: number
   perPage: number
   filters: z.infer<typeof filterSchema>[]

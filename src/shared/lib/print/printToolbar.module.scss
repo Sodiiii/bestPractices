@@ -1,0 +1,15 @@
+.dropdownBtn {
+  padding: 0 8px;
+  gap: 4px;
+  
+
+  svg {
+    transition: .3s ease-in-out;
+  }
+}
+
+.dropdownOpen {
+  svg[data-icon="down"] {
+    rotate: -180deg;
+  }
+}

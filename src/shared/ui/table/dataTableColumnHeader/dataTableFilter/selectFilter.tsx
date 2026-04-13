@@ -1,13 +1,13 @@
-import type { Column } from '@tanstack/react-table'
 import type { SelectProps } from '@tinkerbells/xenon-ui'
+import type { Column, RowData } from '@tanstack/react-table'
 
 import { Select } from '@tinkerbells/xenon-ui'
 
-export type SelectFilterProps = {
-  column: Column<any>
-} & SelectProps
+export interface SelectFilterProps<TData extends RowData = RowData> extends SelectProps {
+  column: Column<TData, unknown>
+}
 
-export function SelectFilter({ column, value, options, ...rest }: SelectFilterProps) {
+export function SelectFilter<TData extends RowData = RowData>({ column, value, options, ...rest }: SelectFilterProps<TData>) {
   const columnFilterValue = column.getFilterValue()
 
   return (

@@ -20,7 +20,9 @@ export const DEFAULT_LABELS = {
   undoControlLabel: 'Отменить',
   redoControlLabel: 'Повторить',
   colorControlLabel: 'Цвет текста',
+  fontSizeControlLabel: 'Размер текста',
   highlightControlLabel: 'Выделение',
+  lineHeightControlLabel: 'Межстрочный интервал',
 } as const
 
 export type RichTextEdtiorLabel = keyof typeof DEFAULT_LABELS

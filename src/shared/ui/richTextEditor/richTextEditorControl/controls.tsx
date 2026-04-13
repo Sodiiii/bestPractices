@@ -1,10 +1,11 @@
-import type { ColorPickerProps, SelectProps } from '@tinkerbells/xenon-ui'
+import type { SelectProps } from '@tinkerbells/xenon-ui'
 
 import * as React from 'react'
-import { ColorPicker, Select, Tooltip, TooltipContent, TooltipTrigger } from '@tinkerbells/xenon-ui'
+import { Select, Tooltip, TooltipContent, TooltipTrigger } from '@tinkerbells/xenon-ui'
 import { AlignCenterOutlined, AlignLeftOutlined, AlignRightOutlined, BoldOutlined, HighlightOutlined, ItalicOutlined, OrderedListOutlined, RollbackOutlined } from '@ant-design/icons'
 
 import { cn } from '@/shared/lib/classNames'
+import { SelectColorPicker } from '@/shared/ui/selectColorPicker'
 
 import cls from '../richTextEditor.module.scss'
 import { createControl } from './richTextEditorControl'
@@ -73,11 +74,12 @@ export const HighlightControl = createControl({
   operation: { name: 'toggleHighlight', attributes: { color: '#ffec99' } },
 })
 
-type RichTextEditorHeadingControlProps = {
+interface RichTextEditorHeadingControlProps extends Omit<SelectProps, 'options' | 'onSelect'> {
+  /** Текст подсказки для селекта заголовков. */
   title?: string
-} & Omit<SelectProps, 'options' | 'onSelect'>
+}
 
-export const HeadingControl = React.forwardRef<HTMLButtonElement, RichTextEditorHeadingControlProps>(({ className, title, ...rest }) => {
+export const HeadingControl = React.forwardRef<HTMLDivElement, RichTextEditorHeadingControlProps>(({ className, title, ...rest }, ref) => {
   const { editor } = useRichTextEditorContext()
   const currentValue = editor?.isActive('heading', { level: 2 })
     ? 2
@@ -87,7 +89,7 @@ export const HeadingControl = React.forwardRef<HTMLButtonElement, RichTextEditor
         ? 4
         : 'paragraph'
 
-  const handleSelect = React.useCallback((value: any) => {
+  const handleSelect = React.useCallback((value: unknown) => {
     if (value === 2 || value === 3 || value === 4) {
       editor?.chain().focus().toggleHeading({ level: value }).run()
     }
@@ -100,7 +102,7 @@ export const HeadingControl = React.forwardRef<HTMLButtonElement, RichTextEditor
 
     <Tooltip>
       <TooltipTrigger asChild>
-        <div>
+        <div ref={ref}>
           <Select
             {...rest}
             size="small"
@@ -123,15 +125,17 @@ export const HeadingControl = React.forwardRef<HTMLButtonElement, RichTextEditor
   )
 })
 
-type RichTextEditorColorPickerControlProps = {
+HeadingControl.displayName = 'HeadingControl'
+
+interface RichTextEditorColorPickerControlProps {
+  /** Подсказка контрола выбора цвета. */
   title?: string
-} & ColorPickerProps
+}
 
 export const ColorControl = React.forwardRef<HTMLDivElement, RichTextEditorColorPickerControlProps>(({ title, ...rest }, ref) => {
   const { editor } = useRichTextEditorContext()
 
-  const handleChange = React.useCallback((color: Parameters<ColorPickerProps['onChange']>[0]) => {
-    const hexColor = color.toHexString()
+  const handleChange = React.useCallback((hexColor: string) => {
     if (editor?.isActive('textStyle', { color: hexColor })) {
       editor.chain().focus().unsetColor().run()
     }
@@ -144,28 +148,107 @@ export const ColorControl = React.forwardRef<HTMLDivElement, RichTextEditorColor
     <Tooltip>
       <TooltipTrigger asChild>
         <div ref={ref} className={cls.colorPicker} title={title}>
-          <ColorPicker
+          <SelectColorPicker
             {...rest}
             value={editor?.getAttributes('textStyle').color || '#000000'}
             onChange={handleChange}
-            size="small"
-            presets={[
-              {
-                label: 'Рекомендуемые цвета',
-                colors: [
-                  '#000000',
-                  '#1677ff',
-                  '#52c41a',
-                  '#faad14',
-                  '#f5222d',
-                  '#722ed1',
-                ],
-              },
-            ]}
           />
         </div>
       </TooltipTrigger>
       <TooltipContent>Цвет текста</TooltipContent>
     </Tooltip>
   )
+})
+
+ColorControl.displayName = 'ColorControl'
+
+interface RichTextEditorMetricControlProps extends Omit<SelectProps, 'options' | 'onSelect'> {
+  /** Подсказка для metric-контрола. */
+  title?: string
+}
+
+const FONT_SIZE_OPTIONS = [
+  { value: '12', label: '12 px' },
+  { value: '14', label: '14 px' },
+  { value: '16', label: '16 px' },
+  { value: '18', label: '18 px' },
+  { value: '20', label: '20 px' },
+  { value: '24', label: '24 px' },
+  { value: '28', label: '28 px' },
+  { value: '32', label: '32 px' },
+]
+
+const LINE_HEIGHT_OPTIONS = [
+  { value: '1.1', label: '1.1' },
+  { value: '1.25', label: '1.25' },
+  { value: '1.4', label: '1.4' },
+  { value: '1.5', label: '1.5' },
+  { value: '1.7', label: '1.7' },
+  { value: '2', label: '2.0' },
+]
+
+/**
+ * Рендерит селект для блочных typographic-метрик редактора.
+ *
+ * Алгоритм:
+ * - читает текущее значение атрибута из `textStyle` mark активного selection;
+ * - при выборе нового значения вызывает кастомную tiptap-команду по имени;
+ * - все команды запускает через dynamic access, чтобы не зависеть от module augmentation команд tiptap.
+ */
+function createMetricSelectControl({
+  tooltip,
+  commandName,
+  options,
+}: {
+  tooltip: string
+  commandName: 'setFontSize' | 'setLineHeight'
+  options: Array<{ value: string, label: string }>
+}) {
+  const Control = React.forwardRef<HTMLDivElement, RichTextEditorMetricControlProps>(({ className, title, ...rest }, ref) => {
+    const { editor } = useRichTextEditorContext()
+    const currentValue = String(editor?.getAttributes('textStyle')[commandName === 'setFontSize' ? 'fontSize' : 'lineHeight'] ?? options[0]?.value ?? '')
+
+    const handleSelect = React.useCallback((value: unknown) => {
+      const chain = editor?.chain().focus() as unknown as Record<string, unknown> | undefined
+      const command = chain?.[commandName]
+      if (typeof command !== 'function')
+        return
+      const next = command.call(chain, String(value))
+      if (next && typeof next === 'object' && 'run' in next && typeof next.run === 'function')
+        next.run()
+    }, [editor])
+
+    return (
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <div ref={ref}>
+            <Select
+              {...rest}
+              size="small"
+              value={currentValue}
+              options={options}
+              onSelect={handleSelect}
+              className={cn(cls.metricSelect, className)}
+            />
+          </div>
+        </TooltipTrigger>
+        <TooltipContent>{title || tooltip}</TooltipContent>
+      </Tooltip>
+    )
+  })
+
+  Control.displayName = commandName
+  return Control
+}
+
+export const FontSizeControl = createMetricSelectControl({
+  tooltip: 'Размер текста',
+  commandName: 'setFontSize',
+  options: FONT_SIZE_OPTIONS,
+})
+
+export const LineHeightControl = createMetricSelectControl({
+  tooltip: 'Межстрочный интервал',
+  commandName: 'setLineHeight',
+  options: LINE_HEIGHT_OPTIONS,
 })

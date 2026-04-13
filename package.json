@@ -1,17 +1,11 @@
 {
-  "name": "best-boilerplate",
+  "name": "admin",
   "type": "module",
   "version": "0.0.0",
   "private": true,
-  "homepage": "https://github.com/Sodiiii/projectSample",
-  "repository": {
-    "url": "https://github.com/Sodiiii/projectSample"
-  },
-  "bugs": {
-    "url": "https://github.com/Sodiiii/projectSample/issues"
-  },
+  "homepage": "/best_practices/",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port 5173",
     "build": "./build.sh",
     "build-pruv": "./build.sh pruv",
     "build-kaodev": "./build.sh kaodev",
@@ -21,10 +15,12 @@
     "preview-kaodev": "vite preview --mode kaodev",
     "lint": "eslint . && stylelint \"src/**/*.scss\"",
     "lint:fix": "eslint . --fix && stylelint \"src/**/*.scss\" --fix",
-    "typecheck": "tsc --noEmit",
     "preview": "vite preview",
     "zip": "zip -r project_$(date +%d-%m-%y).zip build/",
-    "prepare": "husky"
+    "prepare": "husky",
+    "typecheck": "tsc -b --pretty false",
+    "typecheck:app": "tsc -p tsconfig.app.json --pretty false",
+    "typecheck:node": "tsc -p tsconfig.node.json --pretty false"
   },
   "dependencies": {
     "@ant-design/icons": "^6.0.0",
@@ -42,16 +38,20 @@
     "@tiptap/extension-text-style": "^2.25.0",
     "@tiptap/react": "^2.25.0",
     "@tiptap/starter-kit": "^2.25.0",
+    "axios": "^1.11.0",
     "dayjs": "^1.11.19",
+    "html2canvas": "^1.4.1",
+    "mobx": "^6.13.7",
+    "mobx-react": "^9.2.0",
     "nuqs": "^2.4.3",
+    "postcss-preset-env": "^11.2.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-error-boundary": "^5.0.0",
     "react-hook-form": "^7.55.0",
-    "react-redux": "^9.2.0",
     "react-router": "^7.6.3",
-    "redux-persist": "^6.0.0",
     "sonner": "^2.0.6",
+    "vite-plugin-svgr": "^4.5.0",
     "vite-tsconfig-paths": "^5.1.4",
     "zod": "^4.0.2"
   },
@@ -61,9 +61,11 @@
     "@commitlint/config-conventional": "^19.8.1",
     "@eslint/js": "^9.30.1",
     "@faker-js/faker": "^9.9.0",
+    "@stylistic/stylelint-plugin": "^4.0.0",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
-    "@vitejs/plugin-react": "^4.6.0",
+    "@vitejs/plugin-react": "^4.7.0",
+    "concurrently": "^9.2.1",
     "eslint": "^9.30.1",
     "globals": "^16.3.0",
     "husky": "^9.1.7",
@@ -74,11 +76,12 @@
     "stylelint-config-prettier-scss": "^1.0.0",
     "stylelint-config-standard-scss": "^15.0.1",
     "stylelint-declaration-strict-value": "^1.10.11",
+    "stylelint-order": "^8.1.1",
     "stylelint-scss": "^6.12.1",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.35.1",
     "typescript-plugin-css-modules": "^5.1.0",
-    "vite": "^7.0.3"
+    "vite": "^7.3.2"
   },
   "msw": {
     "workerDirectory": [
