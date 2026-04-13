@@ -1,0 +1,15 @@
+.editorPage {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  padding: var(--xenon-padding);
+}
+
+.card {
+  width: 100%;
+  max-width: 50vw;
+
+  :global(.xenon-card-body) {
+    height: calc(100% - var(--xenon-card-header-height-sm));
+  }
+}

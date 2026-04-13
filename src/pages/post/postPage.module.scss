@@ -1,0 +1,15 @@
+.postPage {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  padding: var(--xenon-padding);
+}
+
+.card {
+  height: 100%;
+  width: 100%;
+
+  :global(.xenon-card-body) {
+    height: calc(100% - var(--xenon-card-header-height-sm));
+  }
+}

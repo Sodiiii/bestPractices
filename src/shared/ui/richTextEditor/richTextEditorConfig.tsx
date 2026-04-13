@@ -1,0 +1,26 @@
+export const DEFAULT_LABELS = {
+  boldControlLabel: 'Жирный текст',
+  italicControlLabel: 'Курсив',
+  underlineControlLabel: 'Подчёркивание',
+  strikeControlLabel: 'Зачёркивание',
+  clearFormattingControlLabel: 'Очистить форматирование',
+  linkControlLabel: 'Ссылка',
+  unlinkControlLabel: 'Удалить ссылку',
+  bulletListControlLabel: 'Маркированный список',
+  orderedListControlLabel: 'Нумерованный список',
+  h1ControlLabel: 'Заголовок 1',
+  h2ControlLabel: 'Заголовок 2',
+  h3ControlLabel: 'Заголовок 3',
+  h4ControlLabel: 'Заголовок 4',
+  blockquoteControlLabel: 'Цитата',
+  alignLeftControlLabel: 'По левому краю',
+  alignCenterControlLabel: 'По центру',
+  alignRightControlLabel: 'По правому краю',
+  alignJustifyControlLabel: 'По ширине',
+  undoControlLabel: 'Отменить',
+  redoControlLabel: 'Повторить',
+  colorControlLabel: 'Цвет текста',
+  highlightControlLabel: 'Выделение',
+} as const
+
+export type RichTextEdtiorLabel = keyof typeof DEFAULT_LABELS

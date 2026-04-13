@@ -1,0 +1,21 @@
+/* Позже будет внутри библиотеки xenon-ui */
+
+.xenon-spin-container {
+  height: 100%;
+}
+
+.xenon-scroll-area__scroll-bar {
+  z-index: 999;
+}
+
+.xenon-tooltip {
+  z-index: 9999;
+}
+
+.xenon-dropdown {
+  z-index: 999;
+}
+
+.xenon-scroll-area__viewport > div[style*="min-width"] {
+  height: 100%;
+}

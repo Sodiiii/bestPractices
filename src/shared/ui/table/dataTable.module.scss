@@ -1,0 +1,49 @@
+.dataTable {
+  height: 100%;
+  width: 100%;
+
+  &--pagination {
+    height: calc(100% - 24px - var(--xenon-margin));
+  }
+
+  .scrollArea {
+    border-radius: var(--xenon-border-radius-lg);
+    border: var(--xenon-line-width, 1px) solid
+      var(--xenon-color-border-secondary, #f0f0f0);
+    height: 100%;
+    position: relative;
+  }
+
+  .container {
+    height: 100%;
+  }
+
+  .table {
+    box-shadow: none;
+
+    &.virtualized {
+      display: grid;
+    }
+
+    &.empty {
+      height: 100%;
+    }
+  }
+
+  .caption {
+    padding-left: 8px;
+  }
+
+  .spin {
+    height: 100%;
+  }
+
+  .spinRoot {
+    height: 100%;
+    max-height: 100% !important;
+  }
+
+  .spinWrapper {
+    height: 100%;
+  }
+}

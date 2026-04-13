@@ -1,0 +1,16 @@
+.dataTableSkeleton {
+  height: 100%;
+  width: 100%;
+}
+
+.table {
+  height: 100%;
+}
+
+.container {
+  height: 100%;
+  overflow: hidden;
+  border-radius: var(--xenon-border-radius-lg);
+  border: var(--xenon-line-width, 1px) solid
+    var(--xenon-color-border-secondary, #f0f0f0);
+}
