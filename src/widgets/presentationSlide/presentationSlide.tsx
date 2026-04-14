@@ -114,7 +114,7 @@ export const PresentationSlide = observer(({
             )}
 
             <div className={cls.sideContent}>
-              {(slide.kind === 'basic' || slide.kind === 'sequence' || slide.kind === 'hybrid') && (
+              {(slide.kind === 'basic' || slide.kind === 'sequence' || slide.kind === 'hybrid') && (step.description !== '') && (
                 <motion.div
                   className={cls.detailCard}
                   initial={{ opacity: 0, y: 18 }}
