@@ -73,6 +73,7 @@ export default ({ mode }: { mode: string }) => defineConfig({
     react(),
     svgr(),
   ],
+  publicDir: 'public',
 
   resolve: {
     alias: [

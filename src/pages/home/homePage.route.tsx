@@ -7,7 +7,7 @@ export const homePageRoute: RouteObject = {
   path: routes.home.path,
   lazy: async () => {
     const page = await import('./homePage').then(module => module.default)
-    const Component = withDocumentTitle(page, { title: routes.home.title })
+    const Component = withDocumentTitle(page, { title: 'Лучшие практики' })
     return { Component }
   },
 }

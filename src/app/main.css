@@ -1,4 +1,32 @@
-/* Позже будет внутри библиотеки xenon-ui */
+@import '../shared/assets/fonts/fonts.css';
+
+html,
+body,
+#root {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
+
+* {
+  font-family: 'Golos Text',  "Segoe UI", sans-serif !important;
+}
+
+body {
+  min-width: 1280px;
+  background: #081d38;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+button,
+a {
+  font: inherit;
+}
 
 .xenon-spin-container {
   height: 100%;
@@ -18,4 +46,10 @@
 
 .xenon-scroll-area__viewport > div[style*="min-width"] {
   height: 100%;
+}
+
+.playIcon {
+  margin-top: -8px;
+  margin-left: 5px;
+  font-size: 40px;
 }
