@@ -10,7 +10,7 @@ import type {
 } from '@/entities/presentation/model/types'
 
 import { routes } from '@/shared/routes'
-import { getPresentationSlideById, presentationDeckConfig, presentationLogoPath, resolvePresentationAssetPath } from '@/entities/presentation'
+import { getResolvedPresentationSections, presentationDeckConfig, presentationLogoPath, resolvePresentationAssetPath } from '@/entities/presentation'
 
 import cls from './presentationHome.module.scss'
 
@@ -61,7 +61,13 @@ function getCardPositionClass(index: number) {
 
 export function PresentationHome() {
   const navigate = useNavigate()
-  const featuredSlide = getPresentationSlideById(presentationDeckConfig.sections[0]?.startSlideId ?? '')
+  const sections = getResolvedPresentationSections()
+
+  const featuredSlide = sections[0]?.slide
+
+  function openSlide(slideId: string) {
+    navigate(routes.slide.build(slideId), { state: { restart: true } })
+  }
 
   return (
     <section className={cls.home}>
@@ -91,7 +97,7 @@ export function PresentationHome() {
                   return
                 }
 
-                navigate(routes.slide.build(featuredSlide.id))
+                openSlide(featuredSlide.id)
               }}
             >
               <span className={cls.heroCtaIcon}>▶</span>
@@ -101,12 +107,7 @@ export function PresentationHome() {
         </motion.article>
 
         <div className={cls.cards}>
-          {presentationDeckConfig.sections.map((section, index) => {
-            const slide = getPresentationSlideById(section.startSlideId)
-            if (!slide) {
-              return null
-            }
-
+          {sections.map(({ section, slide }, index) => {
             return (
               <motion.button
                 key={section.id}
@@ -115,7 +116,7 @@ export function PresentationHome() {
                 initial={{ opacity: 0, y: 32 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.55, delay: 0.1 + index * 0.08, ease: 'easeOut' }}
-                onClick={() => navigate(routes.slide.build(slide.id))}
+                onClick={() => openSlide(slide.id)}
               >
                 <div className={cls.cardTitleRow}>
                   <h2 className={cls.cardTitle}>{section.title}</h2>

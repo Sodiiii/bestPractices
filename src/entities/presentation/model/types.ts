@@ -22,16 +22,12 @@ export type PresentationHomeCardImageVariant
 export interface PresentationHomeCardConfig {
   /** Короткий заголовок карточки на главном экране. */
   title: string
-  /** Дополнительный текст карточки или подзаголовок. */
-  description?: string
   /** Абсолютный путь до изображения карточки из public. */
   imagePath?: string
   /** Настройки раскладки изображения внутри карточки на главной странице. */
   imageLayout?: PresentationHomeCardImageLayout
-  /** Текст CTA внутри карточки или под ней. */
-  ctaLabel?: string
   /** Визуальный размер карточки в сетке главной страницы. */
-  size: 'hero' | 'wide' | 'tall' | 'compact'
+  size: 'wide' | 'compact'
 }
 
 export interface PresentationHomeCardImageLayout {
@@ -47,37 +43,80 @@ export interface PresentationHomeCardImageLayout {
   rotateDeg?: number
 }
 
-export interface PresentationMediaContent {
+export interface PresentationImageMediaContent {
   /** Тип левого контента: изображение или интерактивный виджет. */
-  kind: PresentationMediaKind
+  kind: 'image'
   /** Абсолютный путь до изображения из public. */
-  imagePath?: string
+  imagePath: string
   /** Режим object-fit для изображений на слайдах. */
   objectFit?: PresentationMediaObjectFit
-  /** Ключ React-компонента из widget registry. */
-  widgetKey?: PresentationWidgetKey
 }
 
-export interface PresentationStepConfig {
+export interface PresentationWidgetMediaContent {
+  /** Тип левого контента: изображение или интерактивный виджет. */
+  kind: 'widget'
+  /** Ключ React-компонента из widget registry. */
+  widgetKey: PresentationWidgetKey
+}
+
+export type PresentationMediaContent = PresentationImageMediaContent | PresentationWidgetMediaContent
+
+export interface PresentationStepBaseConfig {
   /** Уникальный идентификатор шага внутри слайда. */
   id: string
-  /** Заголовок шага для selector/hybrid кнопок. */
-  title: string
-  /** Заголовок проекта или подпись справа. */
-  projectTitle: string
-  /** Ссылка на проект, отображаемая рядом с projectTitle. */
-  projectUrl?: string
-  /** Основное описание текущего шага. */
-  description: string
   /** Длительность шага в миллисекундах. */
   durationMs: number
   /** Контент, который нужно показать слева. */
   media: PresentationMediaContent
   /** Альтернативный текст для изображения, если шаг визуальный. */
   imageAlt?: string
-  /** Текст кнопки шага справа для selector/hybrid. */
-  buttonLabel?: string
 }
+
+export interface PresentationContentStepConfig extends PresentationStepBaseConfig {
+  /** Необязательный заголовок шага, если он нужен конкретному UI-режиму. */
+  title?: string
+  /** Заголовок проекта или подпись справа. */
+  projectTitle: string
+  /** Ссылка на проект, отображаемая рядом с projectTitle. */
+  projectUrl?: string
+  /** Основное описание текущего шага, если правой панели нужно показать detail-card. */
+  description?: string
+  /** Content-step не отображается в кнопках selector-режима. */
+  buttonLabel?: never
+}
+
+export interface PresentationSelectorStepConfig extends PresentationStepBaseConfig {
+  /** Заголовок шага и fallback для кнопки. */
+  title: string
+  /** Текст кнопки шага справа. */
+  buttonLabel: string
+  /** Selector-шаг обязан иметь осмысленный alt, потому что не содержит projectTitle. */
+  imageAlt: string
+  /** Selector-step не рендерит project info-card. */
+  projectTitle?: never
+  /** Selector-step не рендерит description-card. */
+  description?: never
+  /** Selector-step не показывает ссылку на проект. */
+  projectUrl?: never
+}
+
+export interface PresentationHybridStepConfig extends PresentationStepBaseConfig {
+  /** Заголовок шага для кнопки/fallback. */
+  title: string
+  /** Заголовок проекта или подпись справа. */
+  projectTitle: string
+  /** Ссылка на проект, отображаемая рядом с projectTitle. */
+  projectUrl?: string
+  /** Основное описание текущего шага, если правой панели нужно показать detail-card. */
+  description?: string
+  /** Текст кнопки шага справа для hybrid-режима. */
+  buttonLabel: string
+}
+
+export type PresentationStepConfig
+  = | PresentationContentStepConfig
+    | PresentationSelectorStepConfig
+    | PresentationHybridStepConfig
 
 export interface PresentationNextTarget {
   /** Тип следующего перехода для подписи основной CTA-кнопки. */
@@ -125,49 +164,69 @@ export interface PresentationSecondaryAction {
   targetSlideId?: string
 }
 
-export interface PresentationSlideBaseConfig {
+export interface PresentationSlideCommonConfig {
   /** Уникальный идентификатор верхнеуровневого слайда. */
   id: string
   /** Идентификатор раздела, к которому относится слайд. */
   sectionId: string
-  /** Тип слайда, влияющий на composition правой панели. */
-  kind: PresentationSlideKind
   /** Общий заголовок слайда. */
   title: string
-  /** Подпись над описанием в правой панели. */
-  infoLabel?: string
-  /** Заголовок блока кнопок под-слайдов в правой панели. */
-  stepButtonsTitle?: string
-  /** Флаг показа верхней info-card в правой панели. */
-  showInfoCard?: boolean
-  /** Настройка текста CTA для внутренних переходов между шагами sequence. */
-  internalStepCta?: PresentationInternalStepCtaConfig
   /** Конфигурация карточки этого слайда на главном экране. */
   homeCard: PresentationHomeCardConfig
-  /** Пошаговый контент слайда. Для basic содержит один шаг. */
-  steps: PresentationStepConfig[]
   /** Метаданные перехода на следующий верхнеуровневый слайд. */
   next?: PresentationNextTarget
 }
 
-export interface PresentationBasicSlideConfig extends PresentationSlideBaseConfig {
+export interface PresentationBasicSlideConfig extends PresentationSlideCommonConfig {
   /** Базовый одиночный слайд. */
   kind: 'basic'
+  /** Подпись над описанием в правой панели. */
+  infoLabel?: string
+  /** Basic-слайд содержит ровно один content-step. */
+  steps: [PresentationContentStepConfig]
+  stepButtonsTitle?: never
+  showInfoCard?: never
+  internalStepCta?: never
 }
 
-export interface PresentationSequenceSlideConfig extends PresentationSlideBaseConfig {
+export interface PresentationSequenceSlideConfig extends PresentationSlideCommonConfig {
   /** Последовательный слайд с автопереходом между шагами. */
   kind: 'sequence'
+  /** Подпись над описанием в правой панели. */
+  infoLabel?: string
+  /** Настройка текста CTA для внутренних переходов между шагами sequence. */
+  internalStepCta?: PresentationInternalStepCtaConfig
+  /** Последовательный набор content-step. */
+  steps: PresentationContentStepConfig[]
+  stepButtonsTitle?: never
+  showInfoCard?: never
 }
 
-export interface PresentationSelectorSlideConfig extends PresentationSlideBaseConfig {
-  /** Слайд, где шаги выбираются кнопками справа. */
+export interface PresentationSelectorSlideConfig extends PresentationSlideCommonConfig {
+  /** Слайд с кнопками выбора шагов, которые также участвуют в общем autoplay/progress сценарии. */
   kind: 'selector'
+  /** Заголовок блока кнопок под-слайдов в правой панели. */
+  stepButtonsTitle: string
+  /** Управляемые кнопками selector-step без project info-card. */
+  steps: PresentationSelectorStepConfig[]
+  infoLabel?: never
+  showInfoCard?: never
+  internalStepCta?: never
 }
 
-export interface PresentationHybridSlideConfig extends PresentationSlideBaseConfig {
+export interface PresentationHybridSlideConfig extends PresentationSlideCommonConfig {
   /** Слайд со счётчиком и кнопками шагов одновременно. */
   kind: 'hybrid'
+  /** Подпись над описанием в правой панели. */
+  infoLabel?: string
+  /** Заголовок блока кнопок под-слайдов в правой панели. */
+  stepButtonsTitle: string
+  /** Флаг показа верхней info-card в правой панели. */
+  showInfoCard?: boolean
+  /** Настройка текста CTA для внутренних переходов между шагами. */
+  internalStepCta?: PresentationInternalStepCtaConfig
+  /** Content-step с обязательными button labels. */
+  steps: PresentationHybridStepConfig[]
 }
 
 export type PresentationSlideConfig

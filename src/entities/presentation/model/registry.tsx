@@ -31,7 +31,7 @@ export const presentationWidgetRegistry: Record<PresentationWidgetKey, typeof De
  * 4. Возвращает унифицированную структуру для UI shell.
  */
 export function resolvePresentationMedia(media: PresentationMediaContent, fallbackAlt: string): PresentationResolvedMedia {
-  if (media.kind === 'widget' && media.widgetKey) {
+  if (media.kind === 'widget') {
     return {
       kind: 'widget',
       component: presentationWidgetRegistry[media.widgetKey],
@@ -41,7 +41,7 @@ export function resolvePresentationMedia(media: PresentationMediaContent, fallba
 
   return {
     kind: 'image',
-    src: media.imagePath ? resolvePresentationAssetPath(media.imagePath) : undefined,
+    src: resolvePresentationAssetPath(media.imagePath),
     objectFit: media.objectFit,
     alt: fallbackAlt,
   }

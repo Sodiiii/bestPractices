@@ -23,6 +23,21 @@ export function getPresentationSectionBySlideId(slideId: string): PresentationSe
   return slide ? getPresentationSectionById(slide.sectionId) : undefined
 }
 
+export function getResolvedPresentationSections(): Array<{
+  section: PresentationSectionConfig
+  slide: PresentationSlideConfig
+}> {
+  return presentationDeckConfig.sections.map((section) => {
+    const slide = getPresentationSlideById(section.startSlideId)
+
+    if (!slide) {
+      throw new Error(`Presentation section "${section.id}" references missing slide "${section.startSlideId}"`)
+    }
+
+    return { section, slide }
+  })
+}
+
 export function getFirstSlideId(): string {
   return presentationDeckConfig.slides[0]?.id ?? ''
 }

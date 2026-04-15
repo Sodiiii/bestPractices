@@ -125,9 +125,12 @@ class PresentationStore {
    * 3. Если верхнеуровневого перехода нет, возвращает действие возврата домой.
    */
   get currentPrimaryAction(): PresentationPrimaryAction {
-    if (this.currentSlide?.kind === 'sequence' && this.currentSlide && this.currentStepIndex < this.currentSlide.steps.length - 1) {
+    const currentSlide = this.currentSlide
+    const nextTarget = this.nextTarget
+
+    if (currentSlide?.kind === 'sequence' && this.currentStepIndex < currentSlide.steps.length - 1) {
       const nextStepIndex = this.currentStepIndex + 1
-      const internalStepCta = this.currentSlide.internalStepCta
+      const internalStepCta = currentSlide.internalStepCta
       const label = internalStepCta?.label ?? 'Следующий проект'
       const description = internalStepCta?.hideDescription
         ? ''
@@ -142,13 +145,13 @@ class PresentationStore {
       }
     }
 
-    if (this.nextTarget) {
+    if (nextTarget) {
       return {
-        kind: this.nextTarget.kind,
-        label: this.nextTarget.label,
-        description: this.nextTarget.description,
+        kind: nextTarget.kind,
+        label: nextTarget.label,
+        description: nextTarget.description,
         isInternalStep: false,
-        targetSlideId: this.nextTarget.targetSlideId,
+        targetSlideId: nextTarget.targetSlideId,
       }
     }
 
@@ -208,7 +211,7 @@ class PresentationStore {
 
     return resolvePresentationMedia(
       this.currentStep.media,
-      this.currentStep.imageAlt ?? this.currentStep.projectTitle,
+      this.currentStep.imageAlt ?? this.currentStep.projectTitle ?? this.currentStep.title ?? '',
     )
   }
 
@@ -216,16 +219,29 @@ class PresentationStore {
    * Синхронизирует store с route-параметром.
    * Алгоритм:
    * 1. Проверяет, существует ли requested slide в config.
-   * 2. Если route уже совпадает, ничего не меняет.
+   * 2. Если route уже совпадает, применяет только отложенный стартовый шаг.
    * 3. При смене route сбрасывает шаг, прогресс и pending navigation.
    */
   setCurrentSlide(slideId: string) {
     const slide = getPresentationSlideById(slideId)
-    if (!slide || slide.id === this.currentSlideId) {
+    if (!slide) {
       return
     }
 
     const initialStepIndex = this.resolvePendingEntryStep(slide.id, slide.steps.length)
+
+    if (slide.id === this.currentSlideId) {
+      if (initialStepIndex === this.currentStepIndex) {
+        return
+      }
+
+      this.resetPendingTransition()
+      this.playbackPhase = 'playing'
+      this.currentStepIndex = initialStepIndex
+      this.elapsedMs = 0
+      this.lastFrameAt = 0
+      return
+    }
 
     this.resetPendingTransition()
     this.playbackPhase = 'playing'
@@ -304,6 +320,14 @@ class PresentationStore {
   prepareEntryStep(slideId: string, stepIndex: number) {
     this.pendingEntrySlideId = slideId
     this.pendingEntryStepIndex = stepIndex
+  }
+
+  /**
+   * Открывает слайд с первого шага даже если route уже указывает на него.
+   */
+  restartSlide(slideId: string) {
+    this.prepareEntryStep(slideId, 0)
+    this.setCurrentSlide(slideId)
   }
 
   /**

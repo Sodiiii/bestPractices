@@ -22,6 +22,24 @@ interface PresentationSlideProps {
   onTogglePlayback: () => void
 }
 
+const StepProgressFill = observer(() => (
+  <motion.span
+    className={cls.stepButtonProgress}
+    initial={{ width: 0 }}
+    animate={{ width: `${presentationStore.stepProgress * 100}%` }}
+    transition={{ duration: 0.16, ease: 'linear' }}
+  />
+))
+
+const PrimaryProgressFill = observer(() => (
+  <motion.span
+    className={cls.primaryFill}
+    initial={{ width: 0 }}
+    animate={{ width: `${presentationStore.ctaProgress * 100}%` }}
+    transition={{ duration: 0.16, ease: 'linear' }}
+  />
+))
+
 export const PresentationSlide = observer(({
   onGoHome,
   onGoBack,
@@ -42,7 +60,11 @@ export const PresentationSlide = observer(({
   const secondaryLabel = presentationStore.currentSecondaryAction.label
   const infoLabel = slide.infoLabel ?? 'О проекте'
   const stepButtonsTitle = slide.stepButtonsTitle ?? (slide.kind === 'hybrid' ? 'Этапы детализации' : 'Виды графиков')
-  const shouldShowInfoCard = slide.showInfoCard ?? slide.kind !== 'selector'
+  const shouldShowInfoCard = slide.kind === 'selector'
+    ? false
+    : slide.kind === 'hybrid'
+      ? (slide.showInfoCard ?? true)
+      : true
   const hasPrimaryDescription = primaryDescription.trim().length > 0
 
   return (
@@ -114,7 +136,7 @@ export const PresentationSlide = observer(({
             )}
 
             <div className={cls.sideContent}>
-              {(slide.kind === 'basic' || slide.kind === 'sequence' || slide.kind === 'hybrid') && (step.description !== '') && (
+              {(slide.kind === 'basic' || slide.kind === 'sequence' || slide.kind === 'hybrid') && Boolean(step.description) && (
                 <motion.div
                   className={cls.detailCard}
                   initial={{ opacity: 0, y: 18 }}
@@ -146,14 +168,7 @@ export const PresentationSlide = observer(({
 
                         {isActive && <div className={cls.backdrop3} />}
 
-                        {isActive && (
-                          <motion.span
-                            className={cls.stepButtonProgress}
-                            initial={{ width: 0 }}
-                            animate={{ width: `${presentationStore.stepProgress * 100}%` }}
-                            transition={{ duration: 0.16, ease: 'linear' }}
-                          />
-                        )}
+                        {isActive && <StepProgressFill />}
                       </button>
                     )
                   })}
@@ -172,12 +187,7 @@ export const PresentationSlide = observer(({
                 </button>
 
                 <button type="button" className={cls.primaryButton} onClick={onGoNext}>
-                  <motion.span
-                    className={cls.primaryFill}
-                    initial={{ width: 0 }}
-                    animate={{ width: `${presentationStore.ctaProgress * 100}%` }}
-                    transition={{ duration: 0.16, ease: 'linear' }}
-                  />
+                  <PrimaryProgressFill />
 
                   <span className={cls.primaryContent}>
                     <span className={cls.primaryLabel}>

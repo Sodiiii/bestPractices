@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { observer } from 'mobx-react'
-import { useNavigate, useParams } from 'react-router'
+import { useLocation, useNavigate, useParams } from 'react-router'
 
 import { routes } from '@/shared/routes'
 import { NotFoundPage } from '@/pages/not-found/notFound'
@@ -11,9 +11,11 @@ import { usePresentationPlayback } from '@/features/presentation/playback/usePre
 
 export const SlidePage = observer(() => {
   const navigate = useNavigate()
+  const location = useLocation()
   const { slideId = '' } = useParams()
   const slide = getPresentationSlideById(slideId)
   const { set } = useDocumentTitle()
+  const shouldRestart = Boolean((location.state as { restart?: boolean } | null)?.restart)
 
   usePresentationPlayback(Boolean(slide))
 
@@ -22,9 +24,15 @@ export const SlidePage = observer(() => {
       return
     }
 
-    presentationStore.setCurrentSlide(slide.id)
+    if (shouldRestart) {
+      presentationStore.restartSlide(slide.id)
+    }
+    else {
+      presentationStore.setCurrentSlide(slide.id)
+    }
+
     set(`${slide.title} | Лучшие практики`)
-  }, [set, slide])
+  }, [set, shouldRestart, slide])
 
   if (!slide) {
     return <NotFoundPage />

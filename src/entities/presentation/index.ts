@@ -1,7 +1,7 @@
 export { presentationDeckConfig } from './model/config'
 export { presentationStore } from './model/presentationStore'
 export { presentationLogoPath, presentationWidgetRegistry, resolvePresentationAssetPath, resolvePresentationMedia } from './model/registry'
-export { getFirstSlideId, getNextTarget, getPresentationSectionBySlideId, getPresentationSlideById, getPresentationSlides, getPreviousSlideId } from './model/selectors'
+export { getFirstSlideId, getNextTarget, getPresentationSectionBySlideId, getPresentationSlideById, getPresentationSlides, getPreviousSlideId, getResolvedPresentationSections } from './model/selectors'
 
 export type {
   PresentationDeckConfig,
