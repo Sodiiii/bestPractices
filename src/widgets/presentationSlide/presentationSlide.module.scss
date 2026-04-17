@@ -70,7 +70,7 @@
   font-size: clamp(1.15rem, 1.4vw, 1.45rem);
   color: rgb(205 222 245 / 60%);
   background: transparent;
-  transition: .2s ease-in-out;
+  transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
   cursor: pointer;
   gap: 0.7rem;
 
@@ -295,7 +295,7 @@
   font-size: 1.1rem;
   color: #fff;
   background: rgb(255 255 255 / 8%);
-  transition: .3s ease-in-out;
+  transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
   cursor: pointer;
 
   &:hover {

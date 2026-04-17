@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 
 import { motion } from 'motion/react'
 import { useNavigate } from 'react-router'
@@ -13,6 +13,21 @@ import { routes } from '@/shared/routes'
 import { getResolvedPresentationSections, presentationDeckConfig, presentationLogoPath, resolvePresentationAssetPath } from '@/entities/presentation'
 
 import cls from './presentationHome.module.scss'
+
+const homeCardTitleBreakPattern = /<br\s*\/?>/i
+
+function renderHomeCardTitle(title: string): ReactNode {
+  return title.split(homeCardTitleBreakPattern).map((part, index) => (
+    index === 0
+      ? <span key="line-0">{part}</span>
+      : (
+          <span key={`line-${index}`}>
+            <br />
+            {part}
+          </span>
+        )
+  ))
+}
 
 function getSlideCardClass(homeCard: PresentationHomeCardConfig) {
   if (homeCard.size === 'compact') {
@@ -119,7 +134,14 @@ export function PresentationHome() {
                 onClick={() => openSlide(slide.id)}
               >
                 <div className={cls.cardTitleRow}>
-                  <h2 className={cls.cardTitle}>{section.title}</h2>
+                  <h2
+                    className={cls.cardTitle}
+                    style={{
+                      '--home-card-title-max-width': slide.homeCard.titleMaxWidth ?? undefined,
+                    } as CSSProperties}
+                  >
+                    {renderHomeCardTitle(slide.homeCard.title)}
+                  </h2>
                   <span className={cls.cardArrow}><RightOutlined /></span>
                 </div>
 
@@ -129,6 +151,8 @@ export function PresentationHome() {
                       className={`${cls.cardImage} ${getCardImageLayoutClass(slide.homeCard.imageLayout)}`}
                       src={resolvePresentationAssetPath(slide.homeCard.imagePath)}
                       alt={section.title}
+                      loading="lazy"
+                      decoding="async"
                       style={{
                         '--home-card-image-scale': slide.homeCard.imageLayout?.scale ?? 1,
                         '--home-card-image-offset-x': `${slide.homeCard.imageLayout?.offsetX ?? 0}px`,

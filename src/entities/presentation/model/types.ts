@@ -20,8 +20,10 @@ export type PresentationHomeCardImageVariant
     | 'right'
 
 export interface PresentationHomeCardConfig {
-  /** Короткий заголовок карточки на главном экране. */
+  /** Короткий заголовок карточки на главном экране. Поддерживает только текст и <br /> для ручного переноса. */
   title: string
+  /** Максимальная ширина заголовка карточки в формате CSS-строки. */
+  titleMaxWidth?: string
   /** Абсолютный путь до изображения карточки из public. */
   imagePath?: string
   /** Настройки раскладки изображения внутри карточки на главной странице. */

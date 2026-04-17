@@ -107,6 +107,7 @@ export const PresentationSlide = observer(({
                         className={cls.mediaImage}
                         src={media.src}
                         alt={media.alt}
+                        decoding="async"
                         style={{ objectFit: media.objectFit ?? 'contain' } as CSSProperties}
                       />
                     )}

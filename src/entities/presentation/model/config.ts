@@ -40,8 +40,9 @@ export const presentationDeckConfig: PresentationDeckConfig = {
       kind: 'sequence',
       title: 'Компоновка блоков и сетка',
       homeCard: {
-        title: 'Компоновка блоков и сетка',
-        imagePath: '/presentation/slides/componovka.png',
+        title: 'Компоновка<br />блоков и сетка',
+        titleMaxWidth: '330px',
+        imagePath: '/presentation/slides/componovka.webp',
         imageLayout: {
           variant: 'bottomLeft',
           scale: 1.2,
@@ -58,7 +59,7 @@ export const presentationDeckConfig: PresentationDeckConfig = {
           projectUrl: 'https://kao-qas-bi01:8110/zhuvl/#/main',
           description: 'Система автоматизации сбора данных, анализа эффективности ЖУВ и прогнозирования цен на рынках',
           durationMs: baseDurationMs,
-          media: { kind: 'image', imagePath: '/presentation/slides/1-1.jpg', objectFit: 'cover' },
+          media: { kind: 'image', imagePath: '/presentation/slides/1-1.webp', objectFit: 'cover' },
         },
         {
           id: 'layout-grid-step-2',
@@ -66,7 +67,7 @@ export const presentationDeckConfig: PresentationDeckConfig = {
           projectUrl: 'https://kao-prd-bal03/gasRealization/',
           description: 'Интерактивная страница сервисов Департамента 314',
           durationMs: baseDurationMs,
-          media: { kind: 'image', imagePath: '/presentation/slides/1-2.jpg', objectFit: 'cover' },
+          media: { kind: 'image', imagePath: '/presentation/slides/1-2.webp', objectFit: 'cover' },
         },
         {
           id: 'layout-grid-step-3',
@@ -74,14 +75,14 @@ export const presentationDeckConfig: PresentationDeckConfig = {
           projectUrl: 'https://kao-dev-bi01:8110/azs',
           description: 'Аналитический сервис по мониторингу АЗС ПАО "Газпром"',
           durationMs: baseDurationMs,
-          media: { kind: 'image', imagePath: '/presentation/slides/1-3.jpg', objectFit: 'cover' },
+          media: { kind: 'image', imagePath: '/presentation/slides/1-3.webp', objectFit: 'cover' },
         },
         {
           id: 'layout-grid-step-4',
           projectTitle: 'Контроль производственно-хозяйственной деятельности',
           projectUrl: 'https://kao-dev-bi01:8110/balance_monitoring_v2/',
           durationMs: baseDurationMs,
-          media: { kind: 'image', imagePath: '/presentation/slides/1-4.jpg', objectFit: 'cover' },
+          media: { kind: 'image', imagePath: '/presentation/slides/1-4.webp', objectFit: 'cover' },
         },
         {
           id: 'layout-grid-step-5',
@@ -89,7 +90,7 @@ export const presentationDeckConfig: PresentationDeckConfig = {
           projectTitle: 'Учёт доходов и коммерческих расходов',
           projectUrl: 'https://kao-qas-bi01:8110/zhuvl816/#/analyze',
           durationMs: baseDurationMs,
-          media: { kind: 'image', imagePath: '/presentation/slides/1-5.jpg', objectFit: 'cover' },
+          media: { kind: 'image', imagePath: '/presentation/slides/1-5.webp', objectFit: 'cover' },
         },
       ],
       next: {
@@ -106,8 +107,9 @@ export const presentationDeckConfig: PresentationDeckConfig = {
       title: 'Интерактивные виджеты',
       stepButtonsTitle: 'Виды графиков',
       homeCard: {
-        title: 'Интерактивные виджеты',
-        imagePath: '/presentation/slides/iteract.png',
+        title: 'Интерактивные<br />виджеты',
+        titleMaxWidth: '330px',
+        imagePath: '/presentation/slides/iteract.webp',
         imageLayout: {
           variant: 'right',
           scale: 1.00,
@@ -122,7 +124,7 @@ export const presentationDeckConfig: PresentationDeckConfig = {
           title: 'Площадные',
           buttonLabel: 'Площадные',
           durationMs: baseDurationMs,
-          media: { kind: 'image', imagePath: '/presentation/slides/2-1.png' },
+          media: { kind: 'image', imagePath: '/presentation/slides/2-1.webp' },
           imageAlt: 'Площадные графики',
         },
         {
@@ -130,7 +132,7 @@ export const presentationDeckConfig: PresentationDeckConfig = {
           title: 'Круговые',
           buttonLabel: 'Круговые',
           durationMs: baseDurationMs,
-          media: { kind: 'image', imagePath: '/presentation/slides/2-2.png' },
+          media: { kind: 'image', imagePath: '/presentation/slides/2-2.webp' },
           imageAlt: 'Круговые диаграммы',
         },
         {
@@ -138,7 +140,7 @@ export const presentationDeckConfig: PresentationDeckConfig = {
           title: 'Линейные',
           buttonLabel: 'Линейные',
           durationMs: baseDurationMs,
-          media: { kind: 'image', imagePath: '/presentation/slides/2-3.png' },
+          media: { kind: 'image', imagePath: '/presentation/slides/2-3.webp' },
           imageAlt: 'Линейные графики',
         },
         {
@@ -146,7 +148,7 @@ export const presentationDeckConfig: PresentationDeckConfig = {
           title: 'Столбчатые',
           buttonLabel: 'Столбчатые',
           durationMs: baseDurationMs,
-          media: { kind: 'image', imagePath: '/presentation/slides/2-4.png' },
+          media: { kind: 'image', imagePath: '/presentation/slides/2-4.webp' },
           imageAlt: 'Столбчатые графики',
         },
         {
@@ -154,7 +156,7 @@ export const presentationDeckConfig: PresentationDeckConfig = {
           title: 'Географические',
           buttonLabel: 'Географические',
           durationMs: baseDurationMs,
-          media: { kind: 'image', imagePath: '/presentation/slides/2-5.png' },
+          media: { kind: 'image', imagePath: '/presentation/slides/2-5.webp' },
           imageAlt: 'Географические визуализации',
         },
         {
@@ -162,7 +164,7 @@ export const presentationDeckConfig: PresentationDeckConfig = {
           title: 'Санкей',
           buttonLabel: 'Санкей',
           durationMs: baseDurationMs,
-          media: { kind: 'image', imagePath: '/presentation/slides/2-6.png' },
+          media: { kind: 'image', imagePath: '/presentation/slides/2-6.webp' },
           imageAlt: 'Диаграмма Санкей',
         },
       ],
@@ -180,7 +182,8 @@ export const presentationDeckConfig: PresentationDeckConfig = {
       title: 'Гибкие фильтры и настройки',
       homeCard: {
         title: 'Гибкие фильтры и настройки',
-        imagePath: '/presentation/slides/flexable.png',
+        titleMaxWidth: '860px',
+        imagePath: '/presentation/slides/flexable.webp',
         imageLayout: {
           variant: 'bottomCenter',
           scale: 1,
@@ -195,14 +198,14 @@ export const presentationDeckConfig: PresentationDeckConfig = {
           projectTitle: 'Настройки отображения отчётности',
           description: 'Проектируем гибкие и удобные фильтры, решающие задачи пользователей и повышающие эффективность работы с данными',
           durationMs: baseDurationMs,
-          media: { kind: 'image', imagePath: '/presentation/slides/3-1.png' },
+          media: { kind: 'image', imagePath: '/presentation/slides/3-1.webp' },
         },
         {
           id: 'filters-basic-step-2',
           projectTitle: 'Тёмная тема',
           description: 'Внедряем тёмную тему, для уменьшения утомления глаз при работе с большим количеством данных, улучшения фокуса на ключевых метриках, персонализации интерфейса',
           durationMs: baseDurationMs,
-          media: { kind: 'image', imagePath: '/presentation/slides/3-2.png' },
+          media: { kind: 'image', imagePath: '/presentation/slides/3-2.webp' },
         },
       ],
       next: {
@@ -218,7 +221,8 @@ export const presentationDeckConfig: PresentationDeckConfig = {
       kind: 'basic',
       title: 'Детализация данных',
       homeCard: {
-        title: 'Детализация данных',
+        title: 'Детализация<br />данных',
+        titleMaxWidth: '230px',
         imagePath: '/presentation/slides/detail.svg',
         imageLayout: {
           variant: 'bottomRight',
@@ -235,7 +239,7 @@ export const presentationDeckConfig: PresentationDeckConfig = {
           projectTitle: 'Доступность информации',
           description: 'Показываем дополнительные метрики, расширяющие контекст, изменения за период и источники данных с помощью привычных элементов интерфейса — тултипов и модальных окон.',
           durationMs: baseDurationMs,
-          media: { kind: 'image', imagePath: '/presentation/slides/4-1.png' },
+          media: { kind: 'image', imagePath: '/presentation/slides/4-1.webp' },
           imageAlt: 'Карточка объекта и блок детализации данных',
         },
       ],
